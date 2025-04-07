@@ -15,8 +15,8 @@ type Cache struct {
 	mu sync.Mutex
 }
 
-func NewCache(interval time.Duration) cache {
-	c := cache {
+func NewCache(interval time.Duration) Cache {
+	c := Cache {
 		entries: make(map[string]cacheEntry),
 	}
 	// Start the reapLoop in a separate goroutine
@@ -26,7 +26,7 @@ func NewCache(interval time.Duration) cache {
 
 }
 
-func (c *Cache) Add(key, val) {
+func (c *Cache) Add(key string, val []byte) {
     c.mu.Lock()                // Lock the mutex to protect the map
     defer c.mu.Unlock()        // Ensure it always unlocks, even if an error occurs
     c.entries[key] = cacheEntry{
