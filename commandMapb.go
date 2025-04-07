@@ -8,7 +8,7 @@ import (
     "github.com/lucasolivo/Pokedex/internal/pokecache"
 )
 
-func commandMapb(cfg *config, c *Cache) error {
+func commandMapb(cfg *config, c *pokecache.Cache) error {
 
     url := "https://pokeapi.co/api/v2/location-area"
     if cfg.prevLocationsURL != nil {

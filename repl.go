@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"github.com/lucasolivo/Pokedex/internal/pokecache"
 )
 
 type cliCommand struct {

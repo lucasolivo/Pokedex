@@ -5,11 +5,12 @@ import (
     "encoding/json"
 	"fmt"
 	"io"
+    "github.com/lucasolivo/Pokedex/internal/pokecache"
 )
 
 
 
-func commandMap(cfg *config, c *Cache) error {
+func commandMap(cfg *config, c *pokecache.Cache) error {
 	url := "https://pokeapi.co/api/v2/location-area"
     if cfg.nextLocationsURL != nil {
         url = *cfg.nextLocationsURL
