@@ -18,6 +18,7 @@ type cliCommand struct {
 type config struct {
 	nextLocationsURL *string
 	prevLocationsURL *string
+	Pokedex map[string]Pokemon
 }
 
 type LocationAreaResponse struct {
@@ -42,6 +43,15 @@ type PokemonAreaResponse struct {
     PokemonEncounters []PokemonEncounter `json:"pokemon_encounters"`
 }
 
+type Pokemon struct {
+    ID            int
+    Name          string
+    BaseExperience int
+    Height        int
+    Weight        int
+    // Add other fields you might want to store
+}
+
 // get the lowercase words of each string input
 func cleanInput(text string) []string{
 	lowerCase := strings.ToLower(text)
@@ -50,7 +60,10 @@ func cleanInput(text string) []string{
 }
 
 func startRepl() {
-	cfg := &config{}
+	cfg := &config{
+        // Your existing initialization
+        Pokedex: make(map[string]Pokemon),
+    }
 	cache := pokecache.NewCache(30 * time.Second)
 
 	// create commands map, initialized with exit
@@ -82,6 +95,11 @@ func startRepl() {
 		return commandExplore(cfg, cache, args) // Pass the cache into commandExplore
 	}
 
+	// Closure binding cache for the catch command
+	catchCallback := func(cfg *config, args []string) error {
+		return commandCatch(cfg, cache, args)
+	}
+
 	// add the map command
 	commands["map"] = cliCommand{
 		name:        "map",
@@ -108,6 +126,13 @@ func startRepl() {
 		name:        "explore",
 		description: "Displays pokemon that can be found at a location",
 		callback:    exploreCallback,
+	}
+
+	// Add the catch command
+	commands["catch"] = cliCommand{
+		name:        "catch",
+		description: "Throws a pokeball at a Pokemon",
+		callback:    catchCallback,
 	}
 
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
