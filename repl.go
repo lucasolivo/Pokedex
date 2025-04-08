@@ -12,7 +12,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error // pointer to config allows us to directly mutate the config struct instead of making a copy
+	callback    func(*config, []string) error // pointer to config allows us to directly mutate the config struct instead of making a copy
 }
 
 type config struct {
@@ -30,6 +30,16 @@ type LocationAreaResponse struct {
 type LocationArea struct {
     Name string `json:"name"`
     URL  string `json:"url"`
+}
+
+type PokemonEncounter struct {
+    Pokemon struct {
+        Name string `json:"name"`
+    } `json:"pokemon"`
+}
+
+type PokemonAreaResponse struct {
+    PokemonEncounters []PokemonEncounter `json:"pokemon_encounters"`
 }
 
 // get the lowercase words of each string input
@@ -53,18 +63,23 @@ func startRepl() {
 	}
 	
 	// Create a closure for the help command
-	helpCallback := func(cfg *config) error {
+	helpCallback := func(cfg *config, args []string) error {
 		return commandHelp(commands)
 	}
 
 	// Closure binding cache for the map command
-	mapCallback := func(cfg *config) error {
+	mapCallback := func(cfg *config, args []string) error {
 		return commandMap(cfg, cache) // Pass the cache into commandMap
 	}
 
 	// Closure binding cache for the map back command
-	mapbCallback := func(cfg *config) error {
+	mapbCallback := func(cfg *config, args []string) error {
 		return commandMapb(cfg, cache) // Assume commandMapb supports cache
+	}
+
+	// Closure binding cache for the explore command
+	exploreCallback := func(cfg *config, args []string) error {
+		return commandExplore(cfg, cache, args) // Pass the cache into commandExplore
 	}
 
 	// add the map command
@@ -89,6 +104,11 @@ func startRepl() {
 	}
 
 	// Add the explore command
+	commands["explore"] = cliCommand{
+		name:        "explore",
+		description: "Displays pokemon that can be found at a location",
+		callback:    exploreCallback,
+	}
 
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
 	for {
@@ -97,9 +117,10 @@ func startRepl() {
 			userInput := scanner.Text()
 			cleaned := cleanInput(userInput)
 			command := cleaned[0] //the command should be the first word
+			args := cleaned[1:]
 			cmd, ok := commands[command]
 			if ok {
-				err := cmd.callback(cfg) 
+				err := cmd.callback(cfg, args) 
 				if err != nil {
 					fmt.Println(err)
 				}
