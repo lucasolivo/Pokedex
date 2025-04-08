@@ -59,12 +59,12 @@ func startRepl() {
 
 	// Closure binding cache for the map command
 	mapCallback := func(cfg *config) error {
-		return commandMap(cfg, *cache) // Pass the cache into commandMap
+		return commandMap(cfg, cache) // Pass the cache into commandMap
 	}
 
 	// Closure binding cache for the map back command
 	mapbCallback := func(cfg *config) error {
-		return commandMapb(cfg, *cache) // Assume commandMapb supports cache
+		return commandMapb(cfg, cache) // Assume commandMapb supports cache
 	}
 
 	// add the map command
@@ -87,6 +87,8 @@ func startRepl() {
 		description: "Displays a help message",
 		callback:    helpCallback,
 	}
+
+	// Add the explore command
 
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
 	for {

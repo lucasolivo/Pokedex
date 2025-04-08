@@ -15,14 +15,14 @@ type Cache struct {
 	mu sync.Mutex
 }
 
-func NewCache(interval time.Duration) Cache {
+func NewCache(interval time.Duration) *Cache {
 	c := Cache {
 		entries: make(map[string]cacheEntry),
 	}
 	// Start the reapLoop in a separate goroutine
     go c.reapLoop(interval)
 
-    return c
+    return &c
 
 }
 
