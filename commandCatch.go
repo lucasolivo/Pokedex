@@ -66,6 +66,61 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
     if !ok {
         return fmt.Errorf("Could not parse weight")
     }
+
+	// Extract stats
+	stats := make(map[string]int)
+	statsArray, ok := pokemonData["stats"].([]interface{})
+	if !ok {
+		return fmt.Errorf("Could not parse stats")
+	}
+	for _, statItem := range statsArray {
+		statMap, ok := statItem.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Could not parse stat item")
+		}
+		
+		statValue, ok := statMap["base_stat"].(float64)
+		if !ok {
+			return fmt.Errorf("Could not parse stat value")
+		}
+		
+		statNameMap, ok := statMap["stat"].(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Could not parse stat name")
+		}
+		
+		statName, ok := statNameMap["name"].(string)
+		if !ok {
+			return fmt.Errorf("Could not parse stat name")
+		}
+		
+		stats[statName] = int(statValue)
+	}
+
+	// Extract types
+	var types []string
+	typesArray, ok := pokemonData["types"].([]interface{})
+	if !ok {
+		return fmt.Errorf("Could not parse types")
+	}
+	for _, typeItem := range typesArray {
+		typeMap, ok := typeItem.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Could not parse type item")
+		}
+		
+		typeNameMap, ok := typeMap["type"].(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Could not parse type name")
+		}
+		
+		typeName, ok := typeNameMap["name"].(string)
+		if !ok {
+			return fmt.Errorf("Could not parse type name")
+		}
+		
+		types = append(types, typeName)
+	}
     
     // Create the Pokemon struct with the extracted data
     newPokemon := Pokemon{
@@ -74,6 +129,8 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
         BaseExperience: int(baseExperience),
         Height:         int(height),
         Weight:         int(weight),
+		Stats: 			stats,
+		Types: 			types,
     }
 	fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)
 	catchRate := 500 - newPokemon.BaseExperience

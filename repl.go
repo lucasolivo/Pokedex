@@ -49,7 +49,8 @@ type Pokemon struct {
     BaseExperience int
     Height        int
     Weight        int
-    // Add other fields you might want to store
+    Stats         map[string]int  // For storing stats like "hp": 40
+    Types         []string        // For storing types like ["normal", "flying"]
 }
 
 // get the lowercase words of each string input
@@ -133,6 +134,13 @@ func startRepl() {
 		name:        "catch",
 		description: "Throws a pokeball at a Pokemon",
 		callback:    catchCallback,
+	}
+
+	// Add the inspect command
+	commands["inspect"] = cliCommand{
+		name: "catch",
+		description: "Inspects a pokemon the user asks for, displaying stats if in the pokedex",
+		callback: commandInspect,
 	}
 
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
