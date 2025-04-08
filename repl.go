@@ -143,6 +143,13 @@ func startRepl() {
 		callback: commandInspect,
 	}
 
+	// Add the pokedex command
+	commands["pokedex"] = cliCommand {
+		name: "pokedex",
+		description: "Lists out all the pokemon that have been added to your Pokedex",
+		callback: commandPokedex,
+	}
+
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
 	for {
 		fmt.Print("Pokedex > ")
