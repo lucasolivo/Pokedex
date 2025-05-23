@@ -61,6 +61,7 @@ func cleanInput(text string) []string{
 }
 
 func startRepl() {
+	fmt.Println("Welcome to the Pokedex! Input 'help' for a list of commands!")
 	cfg := &config{
         // Your existing initialization
         Pokedex: make(map[string]Pokemon),
@@ -101,11 +102,23 @@ func startRepl() {
 		return commandCatch(cfg, cache, args)
 	}
 
+	abilityCallback := func(cfg *config, args []string) error {
+		return commandAbility(cfg, args)
+	}
+
 	// add the map command
 	commands["map"] = cliCommand{
 		name:        "map",
 		description: "Displays the next map of the Pokeworld",
 		callback:    mapCallback,
+	}
+
+
+	// add a command to generate random abilities.
+	commands["ability"] = cliCommand{
+		name: "ability",
+		description: "Generates a random ability, multiple (up to 10) if a number is added.",
+		callback: abilityCallback,
 	}
 
 	// add the map back command

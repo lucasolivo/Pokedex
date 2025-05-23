@@ -20,9 +20,12 @@ func commandInspect(cfg *config, args []string) error {
 	fmt.Printf("Height: %v\n", mon.Height)
 	fmt.Printf("Weight: %v\n", mon.Weight)
 	fmt.Printf("Stats:\n")
+	BaseStatTotal := 0
 	for stat, val := range mon.Stats {
 		fmt.Printf("  -%v: %v\n", stat, val)
+		BaseStatTotal += int(val)
 	}
+	fmt.Printf("BST: %v\n", BaseStatTotal)
 	fmt.Printf("Types:\n")
 	for _, typ := range mon.Types {
 		fmt.Printf("  - %v\n", typ)
