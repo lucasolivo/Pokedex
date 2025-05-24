@@ -18,7 +18,6 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 	cachedBody, ok := c.Get(url)
     var body []byte
     if ok {
-        fmt.Println("Using cached data")
         body = cachedBody
     } else {
 		res, err := http.Get(url)
@@ -131,7 +130,9 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
         Weight:         int(weight),
 		Stats: 			stats,
 		Types: 			types,
+		Level:          1 + rand.Intn(10),
     }
+	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)
 	catchRate := 500 - newPokemon.BaseExperience
 	if catchRate < 10{

@@ -8,8 +8,8 @@ func commandPokedex(cfg *config, args []string) error {
 		return fmt.Errorf("Your pokedex is empty, try catching some pokemon!")
 	}
 	fmt.Println("Your pokedex:")
-	for name, _ := range dex {
-		fmt.Printf("  - %v\n", name)
+	for name, mon := range dex {
+		fmt.Printf("  - %v Level %v\n", name, mon.Level)
 	}
 	return nil
 }

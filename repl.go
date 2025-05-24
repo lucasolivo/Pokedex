@@ -51,6 +51,7 @@ type Pokemon struct {
     Weight        int
     Stats         map[string]int  // For storing stats like "hp": 40
     Types         []string        // For storing types like ["normal", "flying"]
+	Level         int
 }
 
 // get the lowercase words of each string input
@@ -163,12 +164,22 @@ func startRepl() {
 		callback: commandPokedex,
 	}
 
+	// Add the "Candy" command to give a rare candy to a pokemon.
+	commands["candy"] = cliCommand {
+		name: "candy",
+		description: "Gives one rare candy to a Pokemon of your choosing",
+		callback: commandCandy,
+	}
+
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
 	for {
 		fmt.Print("Pokedex > ")
 		if scanner.Scan() {
 			userInput := scanner.Text()
 			cleaned := cleanInput(userInput)
+			if len(cleaned) == 0 {
+				continue
+			}
 			command := cleaned[0] //the command should be the first word
 			args := cleaned[1:]
 			cmd, ok := commands[command]
