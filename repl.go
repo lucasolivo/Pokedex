@@ -19,6 +19,8 @@ type config struct {
 	nextLocationsURL *string
 	prevLocationsURL *string
 	Pokedex map[string]Pokemon
+	Party map[string]Pokemon
+	PokeKeys []string
 }
 
 type LocationAreaResponse struct {
@@ -66,6 +68,8 @@ func startRepl() {
 	cfg := &config{
         // Your existing initialization
         Pokedex: make(map[string]Pokemon),
+		Party: make(map[string]Pokemon),
+		PokeKeys: []string{},
     }
 	cache := pokecache.NewCache(30 * time.Second)
 
@@ -105,6 +109,10 @@ func startRepl() {
 
 	abilityCallback := func(cfg *config, args []string) error {
 		return commandAbility(cfg, args)
+	}
+
+	partyCallback := func(cfg *config, args []string) error {
+		return commandParty(cfg)
 	}
 
 	// add the map command
@@ -152,7 +160,7 @@ func startRepl() {
 
 	// Add the inspect command
 	commands["inspect"] = cliCommand{
-		name: "catch",
+		name: "inspect",
 		description: "Inspects a pokemon the user asks for, displaying stats if in the pokedex",
 		callback: commandInspect,
 	}
@@ -169,6 +177,13 @@ func startRepl() {
 		name: "candy",
 		description: "Gives one rare candy to a Pokemon of your choosing",
 		callback: commandCandy,
+	}
+
+	// Add the "Party" command to let the player inspect their current pokemon party
+	commands["party"] = cliCommand {
+		name: "party",
+		description: "Displays your current Pokemon party!",
+		callback: partyCallback,
 	}
 
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner

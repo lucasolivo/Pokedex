@@ -9,10 +9,7 @@ import (
 	"math/rand"
 )
 
-func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("Please submit a Pokemon name")
-	}
+func commandEncounter(cfg *config, c *pokecache.Cache) error {
 	pokemonName := args[0]
 	url := "https://pokeapi.co/api/v2/pokemon/" + pokemonName 
 	cachedBody, ok := c.Get(url)
@@ -143,10 +140,6 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 	if caught {
 		fmt.Printf("%v was caught!\n", pokemonName)
 		cfg.Pokedex[pokemonName] = newPokemon
-		if (len(cfg.Party) < 6) {
-			cfg.Party[pokemonName] = newPokemon
-			cfg.PokeKeys = append(cfg.PokeKeys, pokemonName)
-		}
 	} else {
 		fmt.Printf("%v escaped!\n", pokemonName)
 	}
