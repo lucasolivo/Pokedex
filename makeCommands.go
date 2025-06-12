@@ -95,5 +95,13 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["encounter"] = cliCommand{
+		name: "encounter",
+		description: "Begins an encounter with the specified Pokemon or generates a random Pokemon to encounter if none is found.",
+		callback: func(cfg *config, args []string) error {
+			return commandEncounter(cfg, cache, args)
+		},
+	}
+
 	return commands
 }

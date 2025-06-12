@@ -7,11 +7,63 @@ import (
 	"io"
     "github.com/lucasolivo/Pokedex/internal/pokecache"
 	"math/rand"
+	"bufio"
+	"os"
 )
 
-func commandEncounter(cfg *config, c *pokecache.Cache) error {
-	pokemonName := args[0]
-	url := "https://pokeapi.co/api/v2/pokemon/" + pokemonName 
+type NamedAPIResource struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+}
+
+type PokemonListResponse struct {
+	Count    int                `json:"count"`
+	Results  []NamedAPIResource `json:"results"`
+}
+
+
+func getRandomPokemon() (string, error) {
+	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon-species/?limit=1100")
+	if err != nil {
+		return "", fmt.Errorf("failed to fetch Pokémon list: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("failed to fetch Pokémon list: status %d", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var allMons PokemonListResponse
+	if err := json.Unmarshal(body, &allMons); err != nil {
+		return "", fmt.Errorf("failed to parse Pokémon list: %v", err)
+	}
+
+	if len(allMons.Results) == 0 {
+		return "", fmt.Errorf("no Pokémon found in API response")
+	}
+
+	idx := rand.Intn(len(allMons.Results))
+	return "https://pokeapi.co/api/v2/pokemon/" + allMons.Results[idx].Name, nil
+}
+
+func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
+	var url, pokemonName string
+	if len(args) > 0{
+		pokemonName = args[0]
+		url = "https://pokeapi.co/api/v2/pokemon/" + pokemonName 
+	} else {
+		var err error
+		url, err = getRandomPokemon()
+		if err != nil {
+			return err
+		}
+		pokemonName = url[34:]
+	}
 	cachedBody, ok := c.Get(url)
     var body []byte
     if ok {
@@ -130,18 +182,41 @@ func commandEncounter(cfg *config, c *pokecache.Cache) error {
 		Level:          1 + rand.Intn(10),
     }
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
-	fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)
-	catchRate := 500 - newPokemon.BaseExperience
-	if catchRate < 10{
-		catchRate = 10
-	}
-	caught := rand.Intn(100) < catchRate
-	
-	if caught {
-		fmt.Printf("%v was caught!\n", pokemonName)
-		cfg.Pokedex[pokemonName] = newPokemon
-	} else {
-		fmt.Printf("%v escaped!\n", pokemonName)
+	fmt.Print("What do you want to do? Catch or run?\n\n")
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		if scanner.Scan() {
+			userInput := scanner.Text()
+			cleaned := cleanInput(userInput)
+			if len(cleaned) == 0 {
+				continue
+			}
+			command := cleaned[0]
+			if command == "catch" {
+				fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)
+				catchRate := 500 - newPokemon.BaseExperience
+				if catchRate < 10{
+					catchRate = 10
+				}
+				caught := rand.Intn(100) < catchRate
+				
+				if caught {
+					fmt.Printf("%v was caught!\n", pokemonName)
+					cfg.Pokedex[pokemonName] = newPokemon
+					if (len(cfg.Party) < 6) {
+						cfg.Party[pokemonName] = newPokemon
+						cfg.PokeKeys = append(cfg.PokeKeys, pokemonName)
+					}
+					break
+				} else {
+					fmt.Printf("%v escaped!\n", pokemonName)
+				}
+			}
+			if command == "run" {
+				fmt.Printf("You escaped.\n")
+				break
+			}
+		}
 	}
 
 	return nil
