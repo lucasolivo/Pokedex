@@ -65,12 +65,15 @@ func cleanInput(text string) []string{
 
 func startRepl() {
 	fmt.Println("Welcome to the Pokedex! Input 'help' for a list of commands!")
-	cfg := &config{
-        // Your existing initialization
-        Pokedex: make(map[string]Pokemon),
-		Party: make(map[string]Pokemon),
-		PokeKeys: []string{},
-    }
+	cfg, err := loadGame()
+	if err != nil {
+		cfg = &config{
+			// Your existing initialization
+			Pokedex: make(map[string]Pokemon),
+			Party: make(map[string]Pokemon),
+			PokeKeys: []string{},
+		}
+	}
 	cache := pokecache.NewCache(30 * time.Second)
 
 	// create commands map, initialized with exit
@@ -113,6 +116,10 @@ func startRepl() {
 
 	partyCallback := func(cfg *config, args []string) error {
 		return commandParty(cfg)
+	}
+
+	resetCallback := func(cfg *config, args[]string) error {
+		return commandReset(cfg)
 	}
 
 	// add the map command
@@ -186,6 +193,13 @@ func startRepl() {
 		callback: partyCallback,
 	}
 
+	// Add the 'reset' command to let the player reset the Pokedex and capture new Mons
+	commands["reset"] = cliCommand {
+		name: "reset",
+		description: "Resets the Pokedex and box, allowing you a fresh start",
+		callback: resetCallback,
+	}
+
 	scanner := bufio.NewScanner(os.Stdin) //create a scanner
 	for {
 		fmt.Print("Pokedex > ")
@@ -202,6 +216,10 @@ func startRepl() {
 				err := cmd.callback(cfg, args) 
 				if err != nil {
 					fmt.Println(err)
+				}
+				err = saveGame(cfg)
+				if err != nil {
+					fmt.Println("Failed to save game state:", err)
 				}
 			} else {
 				fmt.Println("Unknown command")
