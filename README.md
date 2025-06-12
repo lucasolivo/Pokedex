@@ -10,4 +10,4 @@ Also added levels when catching a pokemon (between 1 and 10) and added a command
 
 Update 6/11: Added a 'party' command that lets the user see their current party of 6 and their leading pokemon. Will add a box and switch and switchlead command later.
 
-Update 6/12: Added a save and load feature along with a reset option, so that the Pokedex and party persist after the program is exited.
+Update 6/12: Added a save and load feature along with a reset option, so that the Pokedex and party persist after the program is exited. Also added a makeCommands function to clean up the repl.go file.
