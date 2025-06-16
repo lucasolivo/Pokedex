@@ -103,5 +103,13 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["stats"] = cliCommand {
+		name: "stats",
+		description: "Lists out the individual stats of the Pokemon specified, if in Pokedex. Defaults to lead.",
+		callback: func(cfg *config, args []string) error {
+			return commandStats(cfg, args)
+		},
+	}
+
 	return commands
 }

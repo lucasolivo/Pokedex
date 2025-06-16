@@ -1,5 +1,122 @@
 {
-  "Pokedex": {},
-  "Party": {},
-  "PokeKeys": []
+  "Pokedex": {
+    "ledyba": {
+      "ID": 165,
+      "Name": "ledyba",
+      "BaseExperience": 53,
+      "Height": 10,
+      "Weight": 108,
+      "Stats": {
+        "attack": 20,
+        "defense": 30,
+        "hp": 40,
+        "special-attack": 40,
+        "special-defense": 80,
+        "speed": 55
+      },
+      "Types": [
+        "bug",
+        "flying"
+      ],
+      "Level": 6,
+      "CurStats": {
+        "attack": 8,
+        "defense": 9,
+        "hp": 21,
+        "special-attack": 10,
+        "special-defense": 15,
+        "speed": 12
+      }
+    },
+    "meowscarada": {
+      "ID": 908,
+      "Name": "meowscarada",
+      "BaseExperience": 265,
+      "Height": 15,
+      "Weight": 312,
+      "Stats": {
+        "attack": 110,
+        "defense": 70,
+        "hp": 76,
+        "special-attack": 81,
+        "special-defense": 70,
+        "speed": 123
+      },
+      "Types": [
+        "grass",
+        "dark"
+      ],
+      "Level": 3,
+      "CurStats": {
+        "attack": 12,
+        "defense": 10,
+        "hp": 18,
+        "special-attack": 10,
+        "special-defense": 10,
+        "speed": 13
+      }
+    }
+  },
+  "Party": {
+    "ledyba": {
+      "ID": 165,
+      "Name": "ledyba",
+      "BaseExperience": 53,
+      "Height": 10,
+      "Weight": 108,
+      "Stats": {
+        "attack": 20,
+        "defense": 30,
+        "hp": 40,
+        "special-attack": 40,
+        "special-defense": 80,
+        "speed": 55
+      },
+      "Types": [
+        "bug",
+        "flying"
+      ],
+      "Level": 6,
+      "CurStats": {
+        "attack": 8,
+        "defense": 9,
+        "hp": 21,
+        "special-attack": 10,
+        "special-defense": 15,
+        "speed": 12
+      }
+    },
+    "meowscarada": {
+      "ID": 908,
+      "Name": "meowscarada",
+      "BaseExperience": 265,
+      "Height": 15,
+      "Weight": 312,
+      "Stats": {
+        "attack": 110,
+        "defense": 70,
+        "hp": 76,
+        "special-attack": 81,
+        "special-defense": 70,
+        "speed": 123
+      },
+      "Types": [
+        "grass",
+        "dark"
+      ],
+      "Level": 3,
+      "CurStats": {
+        "attack": 12,
+        "defense": 10,
+        "hp": 18,
+        "special-attack": 10,
+        "special-defense": 10,
+        "speed": 13
+      }
+    }
+  },
+  "PokeKeys": [
+    "meowscarada",
+    "ledyba"
+  ]
 }

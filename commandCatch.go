@@ -122,6 +122,7 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 	}
     
     // Create the Pokemon struct with the extracted data
+	lvl := 1 + rand.Intn(10)
     newPokemon := Pokemon{
         ID:             int(id),
         Name:           name,
@@ -130,7 +131,8 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
         Weight:         int(weight),
 		Stats: 			stats,
 		Types: 			types,
-		Level:          1 + rand.Intn(10),
+		Level:          lvl,
+		CurStats:       statCalculator(stats, lvl),
     }
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)

@@ -169,7 +169,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		
 		types = append(types, typeName)
 	}
-    
+    lvl := 1 + rand.Intn(10)
     // Create the Pokemon struct with the extracted data
     newPokemon := Pokemon{
         ID:             int(id),
@@ -179,7 +179,8 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
         Weight:         int(weight),
 		Stats: 			stats,
 		Types: 			types,
-		Level:          1 + rand.Intn(10),
+		Level:          lvl,
+		CurStats:       statCalculator(stats, lvl),
     }
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Print("What do you want to do? Catch or run?\n\n")

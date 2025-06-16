@@ -17,6 +17,7 @@ func commandCandy(cfg *config, args []string) error {
 		return nil
 	} else {
 		mon.Level += 1
+		mon.CurStats = statCalculator(mon.Stats, mon.Level)
 		fmt.Printf("Your %v is now level %v\n", mon.Name, mon.Level)
 		cfg.Pokedex[args[0]] = mon
 		return nil

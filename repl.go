@@ -54,6 +54,7 @@ type Pokemon struct {
     Stats         map[string]int  // For storing stats like "hp": 40
     Types         []string        // For storing types like ["normal", "flying"]
 	Level         int
+	CurStats         map[string]int // Current stats of the pokemon, calculated based on level
 }
 
 // get the lowercase words of each string input
