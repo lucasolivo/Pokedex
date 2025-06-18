@@ -16,6 +16,10 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		return fmt.Errorf("Please submit a Pokemon name")
 	}
 	pokemonName := args[0]
+	_, ok := cfg.Pokedex[pokemonName]
+	if ok {
+		return fmt.Errorf("You already have this Pokemon!")
+	}
 	url := "https://pokeapi.co/api/v2/pokemon/" + pokemonName 
 	cachedBody, ok := c.Get(url)
     var body []byte

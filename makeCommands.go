@@ -111,5 +111,13 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["box"] = cliCommand {
+		name: "box",
+		description: "Sends a Pokemon from your Party into your Box",
+		callback: func(cfg *config, args []string) error {
+			return commandBox(cfg, args)
+		},
+	}
+
 	return commands
 }

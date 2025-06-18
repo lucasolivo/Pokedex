@@ -18,3 +18,5 @@ Update 6/16: Added the 'stats' command to show the current stats of a pokemon an
 
 Update 6/17: Added abilities to Pokemon that you catch, a random one is assigned, even hidden abilities!
 Added nickname support to get closer to your Pokemon.
+Added command to box pokemon.
+Added logic to not allow duplicate Pokemon to be caught.
