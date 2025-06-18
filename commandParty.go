@@ -13,7 +13,11 @@ func commandParty(cfg *config) error {
 			fmt.Printf("Lead: ")
 		}
 		mon := cfg.Party[cfg.PokeKeys[i]]
-		fmt.Printf("%v at level %v\n", mon.Name, mon.Level)
+		if mon.NickName != mon.Name {
+			fmt.Printf("%v the %v at level %v\n", mon.NickName, mon.Name, mon.Level)
+		} else {
+			fmt.Printf("%v at level %v\n", mon.Name, mon.Level)
+		}
 	}
 	return nil
 }

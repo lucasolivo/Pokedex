@@ -7,6 +7,8 @@ import (
 	"io"
     "github.com/lucasolivo/Pokedex/internal/pokecache"
 	"math/rand"
+	"bufio"
+	"os"
 )
 
 func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
@@ -153,6 +155,7 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
     newPokemon := Pokemon{
         ID:             int(id),
         Name:           name,
+		NickName:       name,
         BaseExperience: int(baseExperience),
         Height:         int(height),
         Weight:         int(weight),
@@ -172,6 +175,20 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 	
 	if caught {
 		fmt.Printf("%v was caught!\n", pokemonName)
+		secondScan := bufio.NewScanner(os.Stdin)
+		fmt.Println("Would you like to nickname your Pokemon? Hit enter to say no.")
+		for {
+			if secondScan.Scan() {
+				userInput := secondScan.Text()
+				cleaned := cleanInput(userInput)
+				if len(cleaned) == 0 {
+					break
+				}
+				nickName := cleaned[0]
+				newPokemon.NickName = nickName
+				break
+			}
+		}
 		cfg.Pokedex[pokemonName] = newPokemon
 		if (len(cfg.Party) < 6) {
 			cfg.Party[pokemonName] = newPokemon

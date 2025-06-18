@@ -1,123 +1,67 @@
 {
   "Pokedex": {
-    "incineroar": {
-      "ID": 727,
-      "Name": "incineroar",
-      "BaseExperience": 239,
-      "Height": 18,
-      "Weight": 830,
+    "axew": {
+      "ID": 610,
+      "Name": "axew",
+      "NickName": "axew",
+      "BaseExperience": 64,
+      "Height": 6,
+      "Weight": 180,
       "Stats": {
-        "attack": 115,
-        "defense": 90,
-        "hp": 95,
-        "special-attack": 80,
-        "special-defense": 90,
-        "speed": 60
+        "attack": 87,
+        "defense": 60,
+        "hp": 46,
+        "special-attack": 30,
+        "special-defense": 40,
+        "speed": 57
       },
       "Types": [
-        "fire",
-        "dark"
-      ],
-      "Level": 10,
-      "CurStats": {
-        "attack": 28,
-        "defense": 23,
-        "hp": 39,
-        "special-attack": 21,
-        "special-defense": 23,
-        "speed": 17
-      },
-      "Ability": ""
-    },
-    "ledyba": {
-      "ID": 165,
-      "Name": "ledyba",
-      "BaseExperience": 53,
-      "Height": 10,
-      "Weight": 108,
-      "Stats": {
-        "attack": 20,
-        "defense": 30,
-        "hp": 40,
-        "special-attack": 40,
-        "special-defense": 80,
-        "speed": 55
-      },
-      "Types": [
-        "bug",
-        "flying"
-      ],
-      "Level": 6,
-      "CurStats": {
-        "attack": 8,
-        "defense": 9,
-        "hp": 21,
-        "special-attack": 10,
-        "special-defense": 15,
-        "speed": 12
-      },
-      "Ability": ""
-    },
-    "mankey": {
-      "ID": 56,
-      "Name": "mankey",
-      "BaseExperience": 61,
-      "Height": 5,
-      "Weight": 280,
-      "Stats": {
-        "attack": 80,
-        "defense": 35,
-        "hp": 40,
-        "special-attack": 35,
-        "special-defense": 45,
-        "speed": 70
-      },
-      "Types": [
-        "fighting"
-      ],
-      "Level": 7,
-      "CurStats": {
-        "attack": 17,
-        "defense": 10,
-        "hp": 23,
-        "special-attack": 10,
-        "special-defense": 12,
-        "speed": 15
-      },
-      "Ability": ""
-    },
-    "meowscarada": {
-      "ID": 908,
-      "Name": "meowscarada",
-      "BaseExperience": 265,
-      "Height": 15,
-      "Weight": 312,
-      "Stats": {
-        "attack": 110,
-        "defense": 70,
-        "hp": 76,
-        "special-attack": 81,
-        "special-defense": 70,
-        "speed": 123
-      },
-      "Types": [
-        "grass",
-        "dark"
+        "dragon"
       ],
       "Level": 3,
       "CurStats": {
-        "attack": 12,
-        "defense": 10,
-        "hp": 18,
-        "special-attack": 10,
-        "special-defense": 10,
-        "speed": 13
+        "attack": 11,
+        "defense": 9,
+        "hp": 16,
+        "special-attack": 7,
+        "special-defense": 8,
+        "speed": 9
       },
-      "Ability": ""
+      "Ability": "rivalry"
+    },
+    "muk": {
+      "ID": 89,
+      "Name": "muk",
+      "NickName": "phil",
+      "BaseExperience": 175,
+      "Height": 12,
+      "Weight": 300,
+      "Stats": {
+        "attack": 105,
+        "defense": 75,
+        "hp": 105,
+        "special-attack": 65,
+        "special-defense": 100,
+        "speed": 50
+      },
+      "Types": [
+        "poison"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 20,
+        "defense": 16,
+        "hp": 32,
+        "special-attack": 15,
+        "special-defense": 19,
+        "speed": 12
+      },
+      "Ability": "stench"
     },
     "pidgey": {
       "ID": 16,
       "Name": "pidgey",
+      "NickName": "pidgey",
       "BaseExperience": 50,
       "Height": 3,
       "Weight": 18,
@@ -133,137 +77,81 @@
         "normal",
         "flying"
       ],
-      "Level": 7,
+      "Level": 1,
       "CurStats": {
-        "attack": 12,
-        "defense": 11,
-        "hp": 23,
-        "special-attack": 10,
-        "special-defense": 10,
-        "speed": 13
+        "attack": 6,
+        "defense": 6,
+        "hp": 12,
+        "special-attack": 6,
+        "special-defense": 6,
+        "speed": 7
       },
-      "Ability": "tangled-feet"
+      "Ability": "keen-eye"
     }
   },
   "Party": {
-    "incineroar": {
-      "ID": 727,
-      "Name": "incineroar",
-      "BaseExperience": 239,
-      "Height": 18,
-      "Weight": 830,
+    "axew": {
+      "ID": 610,
+      "Name": "axew",
+      "NickName": "axew",
+      "BaseExperience": 64,
+      "Height": 6,
+      "Weight": 180,
       "Stats": {
-        "attack": 115,
-        "defense": 90,
-        "hp": 95,
-        "special-attack": 80,
-        "special-defense": 90,
-        "speed": 60
+        "attack": 87,
+        "defense": 60,
+        "hp": 46,
+        "special-attack": 30,
+        "special-defense": 40,
+        "speed": 57
       },
       "Types": [
-        "fire",
-        "dark"
-      ],
-      "Level": 10,
-      "CurStats": {
-        "attack": 28,
-        "defense": 23,
-        "hp": 39,
-        "special-attack": 21,
-        "special-defense": 23,
-        "speed": 17
-      },
-      "Ability": ""
-    },
-    "ledyba": {
-      "ID": 165,
-      "Name": "ledyba",
-      "BaseExperience": 53,
-      "Height": 10,
-      "Weight": 108,
-      "Stats": {
-        "attack": 20,
-        "defense": 30,
-        "hp": 40,
-        "special-attack": 40,
-        "special-defense": 80,
-        "speed": 55
-      },
-      "Types": [
-        "bug",
-        "flying"
-      ],
-      "Level": 6,
-      "CurStats": {
-        "attack": 8,
-        "defense": 9,
-        "hp": 21,
-        "special-attack": 10,
-        "special-defense": 15,
-        "speed": 12
-      },
-      "Ability": ""
-    },
-    "mankey": {
-      "ID": 56,
-      "Name": "mankey",
-      "BaseExperience": 61,
-      "Height": 5,
-      "Weight": 280,
-      "Stats": {
-        "attack": 80,
-        "defense": 35,
-        "hp": 40,
-        "special-attack": 35,
-        "special-defense": 45,
-        "speed": 70
-      },
-      "Types": [
-        "fighting"
-      ],
-      "Level": 7,
-      "CurStats": {
-        "attack": 17,
-        "defense": 10,
-        "hp": 23,
-        "special-attack": 10,
-        "special-defense": 12,
-        "speed": 15
-      },
-      "Ability": ""
-    },
-    "meowscarada": {
-      "ID": 908,
-      "Name": "meowscarada",
-      "BaseExperience": 265,
-      "Height": 15,
-      "Weight": 312,
-      "Stats": {
-        "attack": 110,
-        "defense": 70,
-        "hp": 76,
-        "special-attack": 81,
-        "special-defense": 70,
-        "speed": 123
-      },
-      "Types": [
-        "grass",
-        "dark"
+        "dragon"
       ],
       "Level": 3,
       "CurStats": {
-        "attack": 12,
-        "defense": 10,
-        "hp": 18,
-        "special-attack": 10,
-        "special-defense": 10,
-        "speed": 13
+        "attack": 11,
+        "defense": 9,
+        "hp": 16,
+        "special-attack": 7,
+        "special-defense": 8,
+        "speed": 9
       },
-      "Ability": ""
+      "Ability": "rivalry"
+    },
+    "muk": {
+      "ID": 89,
+      "Name": "muk",
+      "NickName": "phil",
+      "BaseExperience": 175,
+      "Height": 12,
+      "Weight": 300,
+      "Stats": {
+        "attack": 105,
+        "defense": 75,
+        "hp": 105,
+        "special-attack": 65,
+        "special-defense": 100,
+        "speed": 50
+      },
+      "Types": [
+        "poison"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 20,
+        "defense": 16,
+        "hp": 32,
+        "special-attack": 15,
+        "special-defense": 19,
+        "speed": 12
+      },
+      "Ability": "stench"
     },
     "pidgey": {
       "ID": 16,
       "Name": "pidgey",
+      "NickName": "pidgey",
       "BaseExperience": 50,
       "Height": 3,
       "Weight": 18,
@@ -279,35 +167,21 @@
         "normal",
         "flying"
       ],
-      "Level": 7,
+      "Level": 1,
       "CurStats": {
-        "attack": 12,
-        "defense": 11,
-        "hp": 23,
-        "special-attack": 10,
-        "special-defense": 10,
-        "speed": 13
+        "attack": 6,
+        "defense": 6,
+        "hp": 12,
+        "special-attack": 6,
+        "special-defense": 6,
+        "speed": 7
       },
-      "Ability": "tangled-feet"
+      "Ability": "keen-eye"
     }
   },
   "PokeKeys": [
-    "meowscarada",
-    "ledyba",
     "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "incineroar",
-    "mankey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey",
-    "pidgey"
+    "muk",
+    "axew"
   ]
 }

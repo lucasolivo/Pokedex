@@ -48,6 +48,7 @@ type PokemonAreaResponse struct {
 type Pokemon struct {
     ID            int
     Name          string
+	NickName      string
     BaseExperience int
     Height        int
     Weight        int
