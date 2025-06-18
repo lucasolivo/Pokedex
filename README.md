@@ -14,4 +14,6 @@ Update 6/12: Added a save and load feature along with a reset option, so that th
 Added a makeCommands function to clean up the repl.go file.
 Added the encounter command.
 
-Update 6/16: Added the 'stats' command to show the current stats of a pokemon and logic to calculate the current stats of a pokemon based on level (natures and evs/ivs not implemented). 
+Update 6/16: Added the 'stats' command to show the current stats of a pokemon and logic to calculate the current stats of a pokemon based on level (natures and evs/ivs not implemented). Logic is based on current gen calculations.
+
+Update 6/17: Added abilities to Pokemon that you catch, a random one is assigned, even hidden abilities!

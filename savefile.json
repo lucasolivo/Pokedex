@@ -1,5 +1,34 @@
 {
   "Pokedex": {
+    "incineroar": {
+      "ID": 727,
+      "Name": "incineroar",
+      "BaseExperience": 239,
+      "Height": 18,
+      "Weight": 830,
+      "Stats": {
+        "attack": 115,
+        "defense": 90,
+        "hp": 95,
+        "special-attack": 80,
+        "special-defense": 90,
+        "speed": 60
+      },
+      "Types": [
+        "fire",
+        "dark"
+      ],
+      "Level": 10,
+      "CurStats": {
+        "attack": 28,
+        "defense": 23,
+        "hp": 39,
+        "special-attack": 21,
+        "special-defense": 23,
+        "speed": 17
+      },
+      "Ability": ""
+    },
     "ledyba": {
       "ID": 165,
       "Name": "ledyba",
@@ -26,7 +55,36 @@
         "special-attack": 10,
         "special-defense": 15,
         "speed": 12
-      }
+      },
+      "Ability": ""
+    },
+    "mankey": {
+      "ID": 56,
+      "Name": "mankey",
+      "BaseExperience": 61,
+      "Height": 5,
+      "Weight": 280,
+      "Stats": {
+        "attack": 80,
+        "defense": 35,
+        "hp": 40,
+        "special-attack": 35,
+        "special-defense": 45,
+        "speed": 70
+      },
+      "Types": [
+        "fighting"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 17,
+        "defense": 10,
+        "hp": 23,
+        "special-attack": 10,
+        "special-defense": 12,
+        "speed": 15
+      },
+      "Ability": ""
     },
     "meowscarada": {
       "ID": 908,
@@ -54,10 +112,69 @@
         "special-attack": 10,
         "special-defense": 10,
         "speed": 13
-      }
+      },
+      "Ability": ""
+    },
+    "pidgey": {
+      "ID": 16,
+      "Name": "pidgey",
+      "BaseExperience": 50,
+      "Height": 3,
+      "Weight": 18,
+      "Stats": {
+        "attack": 45,
+        "defense": 40,
+        "hp": 40,
+        "special-attack": 35,
+        "special-defense": 35,
+        "speed": 56
+      },
+      "Types": [
+        "normal",
+        "flying"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 12,
+        "defense": 11,
+        "hp": 23,
+        "special-attack": 10,
+        "special-defense": 10,
+        "speed": 13
+      },
+      "Ability": "tangled-feet"
     }
   },
   "Party": {
+    "incineroar": {
+      "ID": 727,
+      "Name": "incineroar",
+      "BaseExperience": 239,
+      "Height": 18,
+      "Weight": 830,
+      "Stats": {
+        "attack": 115,
+        "defense": 90,
+        "hp": 95,
+        "special-attack": 80,
+        "special-defense": 90,
+        "speed": 60
+      },
+      "Types": [
+        "fire",
+        "dark"
+      ],
+      "Level": 10,
+      "CurStats": {
+        "attack": 28,
+        "defense": 23,
+        "hp": 39,
+        "special-attack": 21,
+        "special-defense": 23,
+        "speed": 17
+      },
+      "Ability": ""
+    },
     "ledyba": {
       "ID": 165,
       "Name": "ledyba",
@@ -84,7 +201,36 @@
         "special-attack": 10,
         "special-defense": 15,
         "speed": 12
-      }
+      },
+      "Ability": ""
+    },
+    "mankey": {
+      "ID": 56,
+      "Name": "mankey",
+      "BaseExperience": 61,
+      "Height": 5,
+      "Weight": 280,
+      "Stats": {
+        "attack": 80,
+        "defense": 35,
+        "hp": 40,
+        "special-attack": 35,
+        "special-defense": 45,
+        "speed": 70
+      },
+      "Types": [
+        "fighting"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 17,
+        "defense": 10,
+        "hp": 23,
+        "special-attack": 10,
+        "special-defense": 12,
+        "speed": 15
+      },
+      "Ability": ""
     },
     "meowscarada": {
       "ID": 908,
@@ -112,11 +258,56 @@
         "special-attack": 10,
         "special-defense": 10,
         "speed": 13
-      }
+      },
+      "Ability": ""
+    },
+    "pidgey": {
+      "ID": 16,
+      "Name": "pidgey",
+      "BaseExperience": 50,
+      "Height": 3,
+      "Weight": 18,
+      "Stats": {
+        "attack": 45,
+        "defense": 40,
+        "hp": 40,
+        "special-attack": 35,
+        "special-defense": 35,
+        "speed": 56
+      },
+      "Types": [
+        "normal",
+        "flying"
+      ],
+      "Level": 7,
+      "CurStats": {
+        "attack": 12,
+        "defense": 11,
+        "hp": 23,
+        "special-attack": 10,
+        "special-defense": 10,
+        "speed": 13
+      },
+      "Ability": "tangled-feet"
     }
   },
   "PokeKeys": [
     "meowscarada",
-    "ledyba"
+    "ledyba",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "incineroar",
+    "mankey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey",
+    "pidgey"
   ]
 }

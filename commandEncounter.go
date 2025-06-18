@@ -115,6 +115,34 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
         return fmt.Errorf("Could not parse weight")
     }
 
+	// generate a random ability based on their available ones. (Ignores hidden)
+	abilities, ok := pokemonData["abilities"].([]interface{})
+	if !ok {
+        return fmt.Errorf("Could not parse ability list")
+    }
+
+	var ability string
+	toChoose := 1 + rand.Intn(len(abilities)-1)
+
+	for _, rawAbility := range abilities {
+		abilityEntry, ok := rawAbility.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Invalid ability entry format")
+		}
+		slot := abilityEntry["slot"].(float64)
+		if int(slot) == toChoose {
+			toAdd, ok := abilityEntry["ability"].(map[string]interface{})
+			if !ok {
+				return fmt.Errorf("No ability found")
+			}
+			ability, ok = toAdd["name"].(string)
+			if !ok {
+				return fmt.Errorf("No name of ability found")
+			}
+			break
+		}
+	}
+
 	// Extract stats
 	stats := make(map[string]int)
 	statsArray, ok := pokemonData["stats"].([]interface{})
@@ -181,6 +209,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		Types: 			types,
 		Level:          lvl,
 		CurStats:       statCalculator(stats, lvl),
+		Ability:        ability,
     }
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Print("What do you want to do? Catch or run?\n\n")
