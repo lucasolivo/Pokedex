@@ -119,5 +119,21 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["switch"] = cliCommand {
+		name: "switch",
+		description: "Switches the positions of two Pokemon in your party.",
+		callback: func(cfg *config, args []string) error {
+			return commandSwitch(cfg, args)
+		},
+	}
+
+	commands["add"] = cliCommand {
+		name: "add",
+		description: "Adds a Pokemon from your box into your party.",
+		callback: func(cfg *config, args []string) error {
+			return commandAdd(cfg, args)
+		},
+	}
+
 	return commands
 }

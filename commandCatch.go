@@ -78,8 +78,12 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
     }
 
 	var ability string
-	toChoose := 1 + rand.Intn(len(abilities)-1)
-
+	var toChoose int
+	if len(abilities) == 1 {
+		toChoose = 1
+	} else {
+		toChoose = 1 + rand.Intn(len(abilities)-1)
+	}
 	for _, rawAbility := range abilities {
 		abilityEntry, ok := rawAbility.(map[string]interface{})
 		if !ok {

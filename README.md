@@ -20,3 +20,5 @@ Update 6/17: Added abilities to Pokemon that you catch, a random one is assigned
 Added nickname support to get closer to your Pokemon.
 Added command to box pokemon.
 Added logic to not allow duplicate Pokemon to be caught.
+Added the add command to add pokemon from your box into your party
+Added the switch command to switch Pokemon in your party
