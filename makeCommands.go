@@ -143,5 +143,13 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["teach"] = cliCommand {
+		name: "teach",
+		description: "Teaches a move from the Pokemon's learnset to the specified Pokemon. (Form: teach 'pokemon' 'move')",
+		callback: func(cfg *config, args []string) error {
+			return commandTeach(cfg, args)
+		},
+	}
+
 	return commands
 }

@@ -27,49 +27,57 @@ func level(cfg *config, mon Pokemon, name string) Pokemon {
 		fmt.Printf("Your %v is now level %v\n", mon.Name, mon.Level)
 		for moveName, move := range mon.Learnset {
 			if move.LevelUp == mon.Level {
-				if len(mon.Moves) < 4 {
-					mon.Moves = append(mon.Moves, moveName)
-					fmt.Printf("%v learned %v!\n", name, moveName)
-				} else {
-					secondScan := bufio.NewScanner(os.Stdin)
-					fmt.Println("You can only know up to 4 moves at a time, is there one you would Like to replace?")
-					fmt.Printf("New move: %v\n", moveName)
-					for i, thisMove := range mon.Moves {
-						fmt.Printf("%v: %v\n", i+1, thisMove)
+				alrLearned := false
+				for _, nameOfMove := range mon.Moves {
+					if nameOfMove == moveName{
+						fmt.Printf("%v already knows %v.\n", name, moveName)
+						alrLearned = true
 					}
-					for {
-						if secondScan.Scan() {
-							hasDeleted := false
-							userInput := secondScan.Text()
-							cleaned := cleanInput(userInput)
-							if len(cleaned) == 0 {
-								continue
-							}
-							ToDelete := cleaned[0]
-							if ToDelete == moveName {
-								fmt.Printf("You did not learn %v\n", moveName)
-								break
-							}
-							for dex, thisMove := range mon.Moves {
-								if ToDelete == thisMove {
-									hasDeleted = true
-									mon.Moves = append(mon.Moves[:dex], mon.Moves[dex+1:]...)
-									mon.Moves = append(mon.Moves, moveName)
-									fmt.Printf("You forgot %v and learned %v\n", thisMove, moveName)
+				}
+				if !alrLearned {
+					if len(mon.Moves) < 4 {
+						mon.Moves = append(mon.Moves, moveName)
+						fmt.Printf("%v learned %v!\n", name, moveName)
+					} else {
+						secondScan := bufio.NewScanner(os.Stdin)
+						fmt.Println("You can only know up to 4 moves at a time, is there one you would Like to replace?")
+						fmt.Printf("New move: %v\n", moveName)
+						for i, thisMove := range mon.Moves {
+							fmt.Printf("%v: %v\n", i+1, thisMove)
+						}
+						for {
+							if secondScan.Scan() {
+								hasDeleted := false
+								userInput := secondScan.Text()
+								cleaned := cleanInput(userInput)
+								if len(cleaned) == 0 {
+									continue
+								}
+								ToDelete := cleaned[0]
+								if ToDelete == moveName {
+									fmt.Printf("You did not learn %v\n", moveName)
+									break
+								}
+								for dex, thisMove := range mon.Moves {
+									if ToDelete == thisMove {
+										hasDeleted = true
+										mon.Moves = append(mon.Moves[:dex], mon.Moves[dex+1:]...)
+										mon.Moves = append(mon.Moves, moveName)
+										fmt.Printf("You forgot %v and learned %v\n", thisMove, moveName)
+										break
+									}
+								}
+								if !hasDeleted{
+									fmt.Println("Please give a valid move to delete.")
+								} else {
 									break
 								}
 							}
-							if !hasDeleted{
-								fmt.Println("Please give a valid move to delete.")
-							} else {
-								break
-							}
 						}
 					}
-				}
 			}
 		}
-		cfg.Pokedex[name] = mon
+		}
 		return mon
 	}
 }
