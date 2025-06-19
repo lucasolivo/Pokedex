@@ -56,8 +56,14 @@ type Pokemon struct {
     Types         []string        // For storing types like ["normal", "flying"]
 	Level         int
 	CurStats      map[string]int // Current stats of the pokemon, calculated based on level
-	//Moves         []string  // Current learned moves of the pokemon. 4 Maximum slots.
+	Moves         []string  // Current learned moves of the pokemon. 4 Maximum slots.
 	Ability       string
+	Learnset      map[string]Pokemove
+}
+
+type Pokemove struct {
+	LevelUp int
+	url string
 }
 
 // get the lowercase words of each string input

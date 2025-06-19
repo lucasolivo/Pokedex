@@ -22,3 +22,5 @@ Added command to box pokemon.
 Added logic to not allow duplicate Pokemon to be caught.
 Added the add command to add pokemon from your box into your party
 Added the switch command to switch Pokemon in your party
+
+Update 6/19: Added level up movesets and the move command to check a Pokemon's moves.

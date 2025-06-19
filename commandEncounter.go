@@ -148,6 +148,65 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		}
 	}
 
+	// Find the moves the Pokemon should know at their current level. 
+	lvl := 1 + rand.Intn(10)
+	moves, ok := pokemonData["moves"].([]interface{})
+	if !ok {
+        return fmt.Errorf("Could not parse move list")
+    }
+	//fmt.Println(moves)
+	moveSet := make(map[string]int)
+	learnSet := make(map[string]Pokemove)
+	for _, rawMove := range moves {
+		moveEntry, ok := rawMove.(map[string]interface{})
+		//fmt.Println(moveEntry)
+		if !ok {
+			return fmt.Errorf("can't parse move")
+		}
+		curMove := moveEntry["move"].(map[string]interface{})
+		details := moveEntry["version_group_details"].([]interface{})
+		group_to_use := details[len(details)-1].(map[string]interface{})
+		//fmt.Println(curMove, group_to_use)
+		method := group_to_use["move_learn_method"].(map[string]interface{})
+		//fmt.Println(method)
+		if method["name"].(string) != "level-up" {
+			learnSet[curMove["name"].(string)] = Pokemove{
+				LevelUp: 101,
+				url: curMove["url"].(string),
+			}
+			continue
+		} else {
+			learnSet[curMove["name"].(string)] = Pokemove{
+				LevelUp: int(group_to_use["level_learned_at"].(float64)),
+				url: curMove["url"].(string),
+			}
+		}
+		if int(group_to_use["level_learned_at"].(float64)) <= lvl {
+			moveSet[curMove["name"].(string)] = int(group_to_use["level_learned_at"].(float64))
+		}
+	}
+	
+
+	for {
+		if len(moveSet) <= 4 {
+			break
+		}
+		min_val := 101
+		var min_move string
+		for moveName, val := range moveSet {
+			if val <= min_val {
+				min_val = val
+				min_move = moveName
+			}
+		}
+		delete(moveSet, min_move)
+	}
+
+	var thisMoveset []string
+	for movename, _ := range moveSet {
+		thisMoveset = append(thisMoveset, movename)
+	}
+
 	// Extract stats
 	stats := make(map[string]int)
 	statsArray, ok := pokemonData["stats"].([]interface{})
@@ -202,7 +261,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		
 		types = append(types, typeName)
 	}
-    lvl := 1 + rand.Intn(10)
+    
     // Create the Pokemon struct with the extracted data
     newPokemon := Pokemon{
         ID:             int(id),
@@ -215,7 +274,9 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		Types: 			types,
 		Level:          lvl,
 		CurStats:       statCalculator(stats, lvl),
+		Moves:          thisMoveset,
 		Ability:        ability,
+		Learnset:       learnSet,
     }
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Print("What do you want to do? Catch or run?\n\n")
