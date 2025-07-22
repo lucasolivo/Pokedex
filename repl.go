@@ -57,6 +57,7 @@ type Pokemon struct {
 	Level         int
 	CurStats      map[string]int // Current stats of the pokemon, calculated based on level
 	Moves         []string  // Current learned moves of the pokemon. 4 Maximum slots.
+	Movedata      map[string]Move // The actual data about a particular move. Currently only dealing with power
 	Ability       string
 	Learnset      map[string]Pokemove
 }
@@ -64,6 +65,13 @@ type Pokemon struct {
 type Pokemove struct {
 	LevelUp int
 	url string
+}
+
+type Move struct {
+	Power string
+	Accuracy string
+	Poketype string
+	Damagetype string
 }
 
 // get the lowercase words of each string input

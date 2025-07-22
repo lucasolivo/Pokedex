@@ -13,8 +13,10 @@ func commandMoves(cfg *config, args []string) error {
 	if !ok {
 		return fmt.Errorf("You have not caught %v!", mon)
 	}
+	moveData := pokemon.Movedata
 	for i, move := range pokemon.Moves {
-		fmt.Printf("%v: %v\n", i+1, move)
+		fmt.Printf("%v: %v     Power: %v, Accuracy: %v, Type: %v, Damage Type: %v\n", i+1, move, 
+		moveData[move].Power, moveData[move].Accuracy, moveData[move].Poketype, moveData[move].Damagetype)
 	}
 	return nil
 }

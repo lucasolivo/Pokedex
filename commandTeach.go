@@ -28,6 +28,10 @@ func commandTeach(cfg *config, args []string) error {
 			return fmt.Errorf("%v already knows %v.", name, move)
 		}
 	}
+	err := addMoveData(cfg, &mon, move)
+	if err != nil {
+		return fmt.Errorf("Could not get Move Data")
+	}
 	if len(mon.Moves) < 4 {
 		mon.Moves = append(mon.Moves, move)
 		fmt.Printf("%v learned %v!\n", name, move)
@@ -68,6 +72,7 @@ func commandTeach(cfg *config, args []string) error {
 			}
 		}
 	}
+
 	cfg.Pokedex[name] = mon
 	return nil
 }

@@ -261,6 +261,9 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		
 		types = append(types, typeName)
 	}
+
+	// Initialize moveData map
+	moveData := make(map[string]Move)
     
     // Create the Pokemon struct with the extracted data
     newPokemon := Pokemon{
@@ -275,6 +278,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		Level:          lvl,
 		CurStats:       statCalculator(stats, lvl),
 		Moves:          thisMoveset,
+		Movedata:       moveData,
 		Ability:        ability,
 		Learnset:       learnSet,
     }
@@ -318,6 +322,13 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 						}
 					}
 					cfg.Pokedex[pokemonName] = newPokemon
+					// add moves after pokemon is added to the cfg
+					for _, move := range thisMoveset {
+						err := addMoveData(cfg, &newPokemon, move)
+						if err != nil {
+							return fmt.Errorf("Could not get Pokemon Move Data")
+						}
+					}
 					if (len(cfg.Party) < 6) {
 						cfg.Party[pokemonName] = newPokemon
 						cfg.PokeKeys = append(cfg.PokeKeys, pokemonName)
