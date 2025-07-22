@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bufio"
+//	"bufio"
 	"fmt"
-	"os"
+//	"os"
 	"strings"
 	"time"
 	"github.com/lucasolivo/Pokedex/internal/pokecache"
+	"github.com/chzyer/readline"
 )
 
 type cliCommand struct {
@@ -86,41 +87,47 @@ func startRepl() {
 	cfg, err := loadGame()
 	if err != nil {
 		cfg = &config{
-			// Your existing initialization
-			Pokedex: make(map[string]Pokemon),
-			Party: make(map[string]Pokemon),
+			Pokedex:  make(map[string]Pokemon),
+			Party:    make(map[string]Pokemon),
 			PokeKeys: []string{},
 		}
 	}
 	cache := pokecache.NewCache(30 * time.Second)
-
-	// create commands map, initialized with exit
 	commands := makeCommands(cfg, cache)
 
-	scanner := bufio.NewScanner(os.Stdin) //create a scanner
+	// Set up interactive prompt with readline
+	rl, err := readline.New("Pokedex > ")
+	if err != nil {
+		panic(err)
+	}
+	defer rl.Close()
+
 	for {
-		fmt.Print("Pokedex > ")
-		if scanner.Scan() {
-			userInput := scanner.Text()
-			cleaned := cleanInput(userInput)
-			if len(cleaned) == 0 {
-				continue
+		line, err := rl.Readline()
+		if err != nil { // Handles Ctrl+D and other exit signals
+			break
+		}
+
+		cleaned := cleanInput(line)
+		if len(cleaned) == 0 {
+			continue
+		}
+
+		command := cleaned[0]
+		args := cleaned[1:]
+
+		cmd, ok := commands[command]
+		if ok {
+			err := cmd.callback(cfg, args)
+			if err != nil {
+				fmt.Println(err)
 			}
-			command := cleaned[0] //the command should be the first word
-			args := cleaned[1:]
-			cmd, ok := commands[command]
-			if ok {
-				err := cmd.callback(cfg, args) 
-				if err != nil {
-					fmt.Println(err)
-				}
-				err = saveGame(cfg)
-				if err != nil {
-					fmt.Println("Failed to save game state:", err)
-				}
-			} else {
-				fmt.Println("Unknown command")
+			err = saveGame(cfg)
+			if err != nil {
+				fmt.Println("Failed to save game state:", err)
 			}
+		} else {
+			fmt.Println("Unknown command")
 		}
 	}
 }
