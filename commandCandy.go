@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"bufio"
+	"strconv"
 	"os"
 )
 
@@ -45,9 +46,13 @@ func level(cfg *config, mon Pokemon, name string) Pokemon {
 					} else {
 						secondScan := bufio.NewScanner(os.Stdin)
 						fmt.Println("You can only know up to 4 moves at a time, is there one you would Like to replace?")
-						fmt.Printf("New move: %v\n", moveName)
+						fmt.Printf("New move: %v     Power: %v, Accuracy: %v, Type: %v, Damage Type: %v\n\n", 
+						moveName, mon.Movedata[moveName].Power, mon.Movedata[moveName].Accuracy, 
+						mon.Movedata[moveName].Poketype, mon.Movedata[moveName].Damagetype)
 						for i, thisMove := range mon.Moves {
-							fmt.Printf("%v: %v\n", i+1, thisMove)
+							fmt.Printf("%v: %v     Power: %v, Accuracy: %v, Type: %v, Damage Type: %v\n", i+1, thisMove, 
+							mon.Movedata[thisMove].Power, mon.Movedata[thisMove].Accuracy, 
+							mon.Movedata[thisMove].Poketype, mon.Movedata[thisMove].Damagetype)
 						}
 						for {
 							if secondScan.Scan() {
@@ -63,7 +68,8 @@ func level(cfg *config, mon Pokemon, name string) Pokemon {
 									break
 								}
 								for dex, thisMove := range mon.Moves {
-									if ToDelete == thisMove {
+									strDex := strconv.Itoa(dex+1)
+										if ToDelete == thisMove || ToDelete == strDex{
 										hasDeleted = true
 										mon.Moves = append(mon.Moves[:dex], mon.Moves[dex+1:]...)
 										mon.Moves = append(mon.Moves, moveName)
