@@ -25,3 +25,5 @@ Added the switch command to switch Pokemon in your party
 
 Update 6/19: Added level up movesets and the move command to check a Pokemon's moves.
 Implemented teach command and logic to prevent duplicate moves
+
+Update 7/22: Added MoveData to Pokemon, allowing the power, accuracy, type, and damage type of pokemon moves to be seen.
