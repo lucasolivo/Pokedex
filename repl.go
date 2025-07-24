@@ -57,6 +57,7 @@ type Pokemon struct {
     Types         []string        // For storing types like ["normal", "flying"]
 	Level         int
 	CurStats      map[string]int // Current stats of the pokemon, calculated based on level
+	CurHp         int
 	Moves         []string  // Current learned moves of the pokemon. 4 Maximum slots.
 	Movedata      map[string]Move // The actual data about a particular move. Currently only dealing with power
 	Ability       string

@@ -219,6 +219,9 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 	// Initialize moveData map
 	moveData := make(map[string]Move)
 
+	statVals := statCalculator(stats, lvl)
+	curHp := statVals["hp"]
+
     // Create the Pokemon struct with the extracted data
 
 
@@ -232,7 +235,8 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		Stats: 			stats,
 		Types: 			types,
 		Level:          lvl,
-		CurStats:       statCalculator(stats, lvl),
+		CurStats:       statVals,
+		CurHp:          curHp,
 		Moves:          thisMoveset,
 		Movedata:       moveData,
 		Ability:        ability,

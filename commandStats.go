@@ -19,7 +19,11 @@ func commandStats(cfg *config, args []string) error {
 		}
 	}
 	for name, val := range mon.CurStats {
-		fmt.Printf("%v: %v\n", name, val)
+		if name == "hp"{
+			fmt.Printf("HP: %v/%v \n", mon.CurHp, val)
+		} else {
+			fmt.Printf("%v: %v\n", name, val)
+		}
 	}
 	return nil
 }
