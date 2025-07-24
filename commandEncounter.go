@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"bufio"
 	"os"
+	"strconv"
 )
 
 type NamedAPIResource struct {
@@ -52,6 +53,9 @@ func getRandomPokemon() (string, error) {
 }
 
 func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
+	if len(cfg.Pokedex) == 0 {
+		return fmt.Errorf("You need a Pokemon to begin an encounter.")
+	}
 	var url, pokemonName string
 	if len(args) > 0{
 		pokemonName = args[0]
@@ -286,8 +290,14 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		Ability:        ability,
 		Learnset:       learnSet,
     }
+	for _, move := range thisMoveset {
+		newPokemon, err = addMoveData(newPokemon, move)
+		if err != nil {
+			return fmt.Errorf("Could not get Pokemon Move Data")
+		}
+	}
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
-	fmt.Print("What do you want to do? Catch or run?\n\n")
+	fmt.Print("What do you want to do? \n1: Catch\n2: run\n3: fight\n\n")
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		if scanner.Scan() {
@@ -297,7 +307,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 				continue
 			}
 			command := cleaned[0]
-			if command == "catch" {
+			if command == "catch" || command == "1"{
 				_, ok := cfg.Pokedex[pokemonName]
 				if ok {
 					return fmt.Errorf("You already have this Pokemon!")
@@ -327,12 +337,6 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 					}
 					cfg.Pokedex[pokemonName] = newPokemon
 					// add moves after pokemon is added to the cfg
-					for _, move := range thisMoveset {
-						err := addMoveData(cfg, &newPokemon, move)
-						if err != nil {
-							return fmt.Errorf("Could not get Pokemon Move Data")
-						}
-					}
 					if (len(cfg.Party) < 6) {
 						cfg.Party[pokemonName] = newPokemon
 						cfg.PokeKeys = append(cfg.PokeKeys, pokemonName)
@@ -342,9 +346,54 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 					fmt.Printf("%v escaped!\n", pokemonName)
 				}
 			}
-			if command == "run" {
+			if command == "run" || command == "2"{
 				fmt.Printf("You escaped.\n")
 				break
+			}
+			// Begin battle logic against wild Pokemon
+			if command == "fight" || command == "3" {
+				scannerTwo := bufio.NewScanner(os.Stdin)
+				backed := false
+				leadMonName := cfg.PokeKeys[0]
+				fmt.Printf("Go! %v!\n", leadMonName)
+				leadMon := cfg.Party[leadMonName]
+				for i, move := range leadMon.Moves {
+					fmt.Printf("%v: %v     Power: %v, Accuracy: %v, Type: %v, Damage Type: %v\n", i+1, move, 
+					leadMon.Movedata[move].Power, leadMon.Movedata[move].Accuracy, leadMon.Movedata[move].Poketype, leadMon.Movedata[move].Damagetype)
+				}
+				backNum := len(leadMon.Moves) + 1
+				fmt.Printf("%v: Back\n", backNum)
+				for {
+					if scannerTwo.Scan() {
+						backed = false
+						userInput := scannerTwo.Text()
+						cleaned := cleanInput(userInput)
+						if len(cleaned) == 0 {
+							continue
+						}
+						command := cleaned[0]
+						if command == strconv.Itoa(backNum) || command == "back"{
+							backed = true
+							fmt.Print("What do you want to do? \n1: Catch\n2: run\n3: fight\n\n")
+							break
+						}
+						moveUsed := false
+						for i, move := range leadMon.Moves {
+							if command == move || command == strconv.Itoa(i+1){
+								newPokemonDex := rand.Intn(len(newPokemon.Moves))
+								newPokemonMove := newPokemon.Moves[newPokemonDex]
+								cfg.Party[cfg.PokeKeys[0]], newPokemon = battle(cfg.Party[cfg.PokeKeys[0]], move, newPokemon, newPokemonMove)
+								moveUsed = true
+							}
+						}
+						if !moveUsed{
+							println("Please give a valid input.")
+						}
+					}
+				}
+				if !backed {
+					break
+				}
 			}
 		}
 	}

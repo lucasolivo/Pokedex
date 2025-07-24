@@ -29,7 +29,7 @@ func commandTeach(cfg *config, args []string) error {
 			return fmt.Errorf("%v already knows %v.", name, move)
 		}
 	}
-	err := addMoveData(cfg, &mon, move)
+	mon, err := addMoveData(mon, move)
 	if err != nil {
 		return fmt.Errorf("Could not get Move Data")
 	}

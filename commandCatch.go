@@ -242,6 +242,13 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		Ability:        ability,
 		Learnset:       learnSet,
     }
+
+	for _, move := range thisMoveset {
+		newPokemon, err = addMoveData(newPokemon, move)
+		if err != nil {
+			return fmt.Errorf("Could not get Pokemon Move Data")
+		}
+	}
 	
 	fmt.Printf("You found a level %v %v!\n", newPokemon.Level, pokemonName)
 	fmt.Printf("Throwing a Pokeball at %v...\n", pokemonName)
@@ -269,12 +276,6 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		}
 		cfg.Pokedex[pokemonName] = newPokemon
 		// add moves after pokemon is added to the cfg
-		for _, move := range thisMoveset {
-			err := addMoveData(cfg, &newPokemon, move)
-			if err != nil {
-				return fmt.Errorf("Could not get Move Data")
-			}
-		}
 		if (len(cfg.Party) < 6) {
 			cfg.Party[pokemonName] = newPokemon
 			cfg.PokeKeys = append(cfg.PokeKeys, pokemonName)

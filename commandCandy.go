@@ -28,7 +28,7 @@ func level(cfg *config, mon Pokemon, name string) Pokemon {
 		fmt.Printf("Your %v is now level %v\n", mon.Name, mon.Level)
 		for moveName, move := range mon.Learnset {
 			if move.LevelUp == mon.Level {
-				err := addMoveData(cfg, &mon, moveName)
+				mon, err := addMoveData(mon, moveName)
 				if err != nil {
 					fmt.Printf("Failed to add move data for %s: %v\n", moveName, err)
 				}

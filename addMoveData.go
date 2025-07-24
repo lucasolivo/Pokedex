@@ -18,31 +18,31 @@ type NamedResource struct {
     Name string `json:"name"`
 }
 
-func addMoveData(cfg *config, mon *Pokemon, move string) error {
+func addMoveData(mon Pokemon, move string) (Pokemon, error) {
     if _, exists := mon.Movedata[move]; exists {
-        return nil
+        return mon, nil
     }
 
     url := "https://pokeapi.co/api/v2/move/" + move
     res, err := http.Get(url)
     if err != nil {
-        return err
+        return mon, err
     }
     defer res.Body.Close()
 
     if res.StatusCode != http.StatusOK {
-        return fmt.Errorf("Move %s not found", move)
+        return mon, fmt.Errorf("Move %s not found", move)
     }
 
     body, err := io.ReadAll(res.Body)
     if err != nil {
-        return err
+        return mon, err
     }
 
     var moveRaw Movestruct
     err = json.Unmarshal(body, &moveRaw)
     if err != nil {
-        return err
+        return mon, err
     }
 
     if mon.Movedata == nil {
@@ -71,7 +71,6 @@ func addMoveData(cfg *config, mon *Pokemon, move string) error {
     }
 
     mon.Movedata[move] = newMove
-    cfg.Pokedex[mon.Name] = *mon
 
-    return nil
+    return mon, nil
 }
