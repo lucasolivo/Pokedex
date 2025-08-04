@@ -31,3 +31,5 @@ Changed the library used to search for input in repl.go to support up and down a
 
 Update 7/24: Added a CurHP value to the Pokemon struct, along with printing out HP in a "Cur/Max" format with the stats command
 Added basic fighting logic for wild Pokemon encounters, but is yet to be finished.
+
+Update 8/4: Made the encounter battling more robust, allowing for switching, logic to defeat Pokemon etc.

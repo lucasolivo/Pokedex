@@ -44,6 +44,26 @@ func battle(mon1 Pokemon, move1 string, mon2 Pokemon, move2 string) (Pokemon, Po
 	
 }
 
+func switchMons(cfg *config, switchOut Pokemon, switchIn Pokemon) error{
+	var first int
+	var second int 
+	for i, name := range cfg.PokeKeys {
+		if name == switchOut.Name {
+			first = i
+		}
+		if name == switchIn.Name {
+			second = i
+		}
+	}
+	if second == 0 {
+		return fmt.Errorf("%v is not in your party.", switchIn.Name)
+	}
+	cfg.PokeKeys[first] = switchIn.Name
+	cfg.PokeKeys[second] = switchOut.Name
+	fmt.Printf("Go, %v!", switchIn.Name)
+	return nil
+}
+
 func damage(attacker Pokemon, move string, defender Pokemon) Pokemon {
 	fmt.Printf("%v used %v!\n", attacker.Name, move)
 	power := attacker.Movedata[move].Power

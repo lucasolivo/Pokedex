@@ -14,9 +14,9 @@ func commandParty(cfg *config) error {
 		}
 		mon := cfg.Party[cfg.PokeKeys[i]]
 		if mon.NickName != mon.Name {
-			fmt.Printf("%v the %v at level %v\n", mon.NickName, mon.Name, mon.Level)
+			fmt.Printf("%v the %v at level %vHP: %v/%v\n", mon.NickName, mon.Name, mon.Level, mon.CurHp, mon.Stats["hp"])
 		} else {
-			fmt.Printf("%v at level %v\n", mon.Name, mon.Level)
+			fmt.Printf("%v at level %v. HP: %v/%v\n", mon.Name, mon.Level, mon.CurHp, mon.Stats["hp"])
 		}
 	}
 	return nil
