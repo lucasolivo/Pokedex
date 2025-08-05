@@ -27,7 +27,7 @@ Update 6/19: Added level up movesets and the move command to check a Pokemon's m
 Implemented teach command and logic to prevent duplicate moves
 
 Update 7/22: Added MoveData to Pokemon, allowing the power, accuracy, type, and damage type of pokemon moves to be seen.
-Changed the library used to search for input in repl.go to support up and down arrows for previous commands.
+Changed the library used to search for input in repl.go to support up and down arrows for previous 
 
 Update 7/24: Added a CurHP value to the Pokemon struct, along with printing out HP in a "Cur/Max" format with the stats command
 Added basic fighting logic for wild Pokemon encounters, but is yet to be finished.
