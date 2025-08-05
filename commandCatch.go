@@ -102,6 +102,38 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 			break
 		}
 	}
+	speciesURL := "https://pokeapi.co/api/v2/pokemon-species/" + pokemonName
+	res, err := http.Get(speciesURL)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("Species info for %s not found", pokemonName)
+	}
+
+	body, err = io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var speciesData map[string]interface{}
+	err = json.Unmarshal(body, &speciesData)
+	if err != nil {
+		return err
+	}
+
+	// Step 2: Get growth_rate name directly
+	growthInfo, ok := speciesData["growth_rate"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("Could not find growth rate info")
+	}
+
+	growthRateName, ok := growthInfo["name"].(string)
+	if !ok {
+		return fmt.Errorf("Could not parse growth rate name")
+	}
 
 	// Find the moves the Pokemon should know at their current level. 
 	lvl := 1 + rand.Intn(10)
@@ -241,6 +273,8 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		Movedata:       moveData,
 		Ability:        ability,
 		Learnset:       learnSet,
+		ExpGroup:       growthRateName,
+		TotalExp:       expChart[growthRateName][lvl],
     }
 
 	for _, move := range thisMoveset {

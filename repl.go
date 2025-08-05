@@ -62,6 +62,8 @@ type Pokemon struct {
 	Movedata      map[string]Move // The actual data about a particular move. Currently only dealing with power
 	Ability       string
 	Learnset      map[string]Pokemove
+	TotalExp      int
+	ExpGroup      string
 }
 
 type Pokemove struct {

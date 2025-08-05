@@ -60,7 +60,7 @@ func switchMons(cfg *config, switchOut Pokemon, switchIn Pokemon) error{
 	}
 	cfg.PokeKeys[first] = switchIn.Name
 	cfg.PokeKeys[second] = switchOut.Name
-	fmt.Printf("Go, %v!", switchIn.Name)
+	fmt.Printf("Go, %v!\n", switchIn.Name)
 	return nil
 }
 

@@ -87,6 +87,14 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	commands["heal"] = cliCommand {
+		name: "heal",
+		description: "Heals your party Pokemon to their maximum HP",
+		callback: func(cfg *config, args []string) error {
+			return commandHeal(cfg)
+		},
+	}
+
 	commands["reset"] = cliCommand{
 		name:        "reset",
 		description: "Resets the Pokedex and party for a fresh start",

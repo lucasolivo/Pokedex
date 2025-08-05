@@ -36,5 +36,6 @@ func commandInspect(cfg *config, args []string) error {
 	for _, typ := range mon.Types {
 		fmt.Printf("  - %v\n", typ)
 	}
+	fmt.Printf("EXP Group: %v\n", mon.ExpGroup)
 	return nil
 }

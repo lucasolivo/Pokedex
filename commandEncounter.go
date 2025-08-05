@@ -162,6 +162,39 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		}
 	}
 
+	speciesURL := "https://pokeapi.co/api/v2/pokemon-species/" + pokemonName
+	res, err := http.Get(speciesURL)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("Species info for %s not found", pokemonName)
+	}
+
+	body, err = io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var speciesData map[string]interface{}
+	err = json.Unmarshal(body, &speciesData)
+	if err != nil {
+		return err
+	}
+
+	// Step 2: Get growth_rate name directly
+	growthInfo, ok := speciesData["growth_rate"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("Could not find growth rate info")
+	}
+
+	growthRateName, ok := growthInfo["name"].(string)
+	if !ok {
+		return fmt.Errorf("Could not parse growth rate name")
+	}
+
 	// Find the moves the Pokemon should know at their current level. 
 	lvl := 1 + rand.Intn(10)
 	moves, ok := pokemonData["moves"].([]interface{})
@@ -299,6 +332,8 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		Movedata:       moveData,
 		Ability:        ability,
 		Learnset:       learnSet,
+		ExpGroup:       growthRateName,
+		TotalExp:       expChart[growthRateName][lvl],
     }
 	for _, move := range thisMoveset {
 		newPokemon, err = addMoveData(newPokemon, move)
@@ -411,7 +446,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 												canFight = true
 												fmt.Println("Pick a Pokemon to switch into!")
 											}
-											fmt.Printf("%v: %v", strconv.Itoa(count), partyMon)
+											fmt.Printf("%v: %v\n", strconv.Itoa(count), partyMon)
 											count += 1
 										}
 									}
@@ -438,6 +473,10 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 														leadMonName = n 
 														leadMon = cfg.Party[n]
 														validCommand = true
+														for i, move := range leadMon.Moves {
+															fmt.Printf("%v: %v     Power: %v, Accuracy: %v, Type: %v, Damage Type: %v\n", i+1, move, 
+															leadMon.Movedata[move].Power, leadMon.Movedata[move].Accuracy, leadMon.Movedata[move].Poketype, leadMon.Movedata[move].Damagetype)
+														}
 														break
 													}
 												}
