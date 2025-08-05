@@ -16,6 +16,15 @@ func commandCandy(cfg *config, args []string) error {
 		return fmt.Errorf("You haven't caught %v yet!", args[0])
 	}
 	cfg.Pokedex[args[0]] = level(cfg, mon, args[0])
+	poke := cfg.Pokedex[args[0]]
+	poke.TotalExp = expChart[poke.ExpGroup][poke.Level]
+	cfg.Pokedex[args[0]] = poke
+
+	for _, name := range cfg.PokeKeys {
+		if name == args[0]{
+			cfg.Party[name] = cfg.Pokedex[name]
+		}
+	}
 	return nil
 }
 

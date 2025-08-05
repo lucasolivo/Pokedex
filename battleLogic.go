@@ -96,7 +96,7 @@ func damage(attacker Pokemon, move string, defender Pokemon) Pokemon {
 				fmt.Println("Problem with accuracy conversion")
 				return defender
 			}
-			floatAccuracy = float64(acc/100)
+			floatAccuracy = float64(acc)/100
 		}
 		hitChance := rand.Float64()
 		if hitChance > floatAccuracy {
@@ -150,6 +150,24 @@ func damage(attacker Pokemon, move string, defender Pokemon) Pokemon {
 	}
 }
 
-//func expGain(mon *Pokemon, experience int) {
-
-//}
+func expGain(winner Pokemon, loser Pokemon, isTrainer bool, cfg *config) Pokemon{
+	a := 1.0
+	if isTrainer{
+		a = 1.5
+	}
+	b := float64(loser.BaseExperience)
+	l := float64(loser.Level)
+	lp := float64(winner.Level)
+	gain := ((b * l) / 5.0 * math.Pow((2*l+10)/(l+lp+10), 2.5) + 1) * a
+	gainInt := int(math.Floor(gain))
+	winner.TotalExp = winner.TotalExp + gainInt
+	fmt.Printf("You gained %v experience!\n", gainInt)
+	for {
+		nextLevel := expChart[winner.ExpGroup][winner.Level+1]
+		if winner.TotalExp < nextLevel{
+			break
+		} 
+		winner = level(cfg, winner, winner.Name)
+	}
+	return winner
+}

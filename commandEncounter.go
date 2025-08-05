@@ -432,6 +432,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 								cfg.Party[cfg.PokeKeys[leadMonNum]], newPokemon = battle(cfg.Party[cfg.PokeKeys[leadMonNum]], move, newPokemon, newPokemonMove)
 								if newPokemon.CurHp == 0 {
 									fmt.Println("You won!")
+									cfg.Party[cfg.PokeKeys[leadMonNum]] = expGain(leadMon, newPokemon, false, cfg)
 									battleOver = true
 									break
 								}
@@ -505,7 +506,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 			}
 		}
 	}
-
+	cfg.Pokedex[leadMonName] = cfg.Party[leadMonName]
 	return nil
 
 }
