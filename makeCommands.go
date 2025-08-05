@@ -2,162 +2,163 @@ package main
 
 import (
 	"github.com/lucasolivo/Pokedex/internal/pokecache"
+	"github.com/lucasolivo/Pokedex/internal/commands"
 )
 
 func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
-	commands := map[string]cliCommand{}
+	coms := map[string]cliCommand{}
 
-	commands["exit"] = cliCommand{
+	coms["exit"] = cliCommand{
 		name:        "exit",
 		description: "Exit the Pokedex",
 		callback:    commandExit,
 	}
 
-	commands["help"] = cliCommand{
+	coms["help"] = cliCommand{
 		name:        "help",
 		description: "Displays a help message",
 		callback: func(cfg *config, args []string) error {
-			return commandHelp(commands)
+			return commands.commandHelp(commands)
 		},
 	}
 
-	commands["map"] = cliCommand{
+	coms["map"] = cliCommand{
 		name:        "map",
 		description: "Displays the next map of the Pokeworld",
 		callback: func(cfg *config, args []string) error {
-			return commandMap(cfg, cache)
+			return commands.commandMap(cfg, cache)
 		},
 	}
 
-	commands["mapb"] = cliCommand{
+	coms["mapb"] = cliCommand{
 		name:        "mapb",
 		description: "Displays the previous map of the Pokeworld",
 		callback: func(cfg *config, args []string) error {
-			return commandMapb(cfg, cache)
+			return commands.commandMapb(cfg, cache)
 		},
 	}
 
-	commands["explore"] = cliCommand{
+	coms["explore"] = cliCommand{
 		name:        "explore",
 		description: "Displays pokemon that can be found at a location",
 		callback: func(cfg *config, args []string) error {
-			return commandExplore(cfg, cache, args)
+			return commands.commandExplore(cfg, cache, args)
 		},
 	}
 
-	commands["catch"] = cliCommand{
+	coms["catch"] = cliCommand{
 		name:        "catch",
 		description: "Throws a pokeball at a Pokemon",
 		callback: func(cfg *config, args []string) error {
-			return commandCatch(cfg, cache, args)
+			return commands.commandCatch(cfg, cache, args)
 		},
 	}
 
-	commands["ability"] = cliCommand{
+	coms["ability"] = cliCommand{
 		name:        "ability",
 		description: "Generates a random ability (add number to get multiple)",
 		callback: func(cfg *config, args []string) error {
-			return commandAbility(cfg, args)
+			return commands.commandAbility(cfg, args)
 		},
 	}
 
-	commands["inspect"] = cliCommand{
+	coms["inspect"] = cliCommand{
 		name:        "inspect",
 		description: "Displays info about a Pokemon in your Pokedex",
-		callback:    commandInspect,
+		callback:    commands.commandInspect,
 	}
 
-	commands["pokedex"] = cliCommand{
+	coms["pokedex"] = cliCommand{
 		name:        "pokedex",
 		description: "Lists out all Pokémon in your Pokedex",
-		callback:    commandPokedex,
+		callback:    commands.commandPokedex,
 	}
 
-	commands["candy"] = cliCommand{
+	coms["candy"] = cliCommand{
 		name:        "candy",
 		description: "Gives one rare candy to level up a Pokemon of your choosing",
-		callback:    commandCandy,
+		callback:    comamnds.commandCandy,
 	}
 
-	commands["party"] = cliCommand{
+	coms["party"] = cliCommand{
 		name:        "party",
 		description: "Displays your current Pokemon party",
 		callback: func(cfg *config, args []string) error {
-			return commandParty(cfg)
+			return commands.commandParty(cfg)
 		},
 	}
 
-	commands["heal"] = cliCommand {
+	coms["heal"] = cliCommand {
 		name: "heal",
 		description: "Heals your party Pokemon to their maximum HP",
 		callback: func(cfg *config, args []string) error {
-			return commandHeal(cfg)
+			return commands.commandHeal(cfg)
 		},
 	}
 
-	commands["reset"] = cliCommand{
+	coms["reset"] = cliCommand{
 		name:        "reset",
 		description: "Resets the Pokedex and party for a fresh start",
 		callback: func(cfg *config, args []string) error {
-			return commandReset(cfg)
+			return commands.commandReset(cfg)
 		},
 	}
 
-	commands["encounter"] = cliCommand{
+	coms["encounter"] = cliCommand{
 		name: "encounter",
 		description: "Begins an encounter with the specified Pokemon or generates a random Pokemon to encounter if none is found.",
 		callback: func(cfg *config, args []string) error {
-			return commandEncounter(cfg, cache, args)
+			return commands.commandEncounter(cfg, cache, args)
 		},
 	}
 
-	commands["stats"] = cliCommand {
+	coms["stats"] = cliCommand {
 		name: "stats",
 		description: "Lists out the individual stats of the Pokemon specified, if in Pokedex. Defaults to lead.",
 		callback: func(cfg *config, args []string) error {
-			return commandStats(cfg, args)
+			return commands.commandStats(cfg, args)
 		},
 	}
 
-	commands["box"] = cliCommand {
+	coms["box"] = cliCommand {
 		name: "box",
 		description: "Sends a Pokemon from your Party into your Box",
 		callback: func(cfg *config, args []string) error {
-			return commandBox(cfg, args)
+			return commands.commandBox(cfg, args)
 		},
 	}
 
-	commands["switch"] = cliCommand {
+	coms["switch"] = cliCommand {
 		name: "switch",
 		description: "Switches the positions of two Pokemon in your party.",
 		callback: func(cfg *config, args []string) error {
-			return commandSwitch(cfg, args)
+			return commands.commandSwitch(cfg, args)
 		},
 	}
 
-	commands["add"] = cliCommand {
+	coms["add"] = cliCommand {
 		name: "add",
 		description: "Adds a Pokemon from your box into your party.",
 		callback: func(cfg *config, args []string) error {
-			return commandAdd(cfg, args)
+			return commands.commandAdd(cfg, args)
 		},
 	}
 
-	commands["moves"] = cliCommand {
+	coms["moves"] = cliCommand {
 		name: "moves",
 		description: "Displays the current Moveset of a Pokemon in your Box.",
 		callback: func(cfg *config, args []string) error {
-			return commandMoves(cfg, args)
+			return commands.commandMoves(cfg, args)
 		},
 	}
 
-	commands["teach"] = cliCommand {
+	coms["teach"] = cliCommand {
 		name: "teach",
 		description: "Teaches a move from the Pokemon's learnset to the specified Pokemon. (Form: teach 'pokemon' 'move')",
 		callback: func(cfg *config, args []string) error {
-			return commandTeach(cfg, args)
+			return commands.commandTeach(cfg, args)
 		},
 	}
 
-	return commands
+	return coms
 }

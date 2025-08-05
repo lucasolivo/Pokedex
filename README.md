@@ -35,3 +35,4 @@ Added basic fighting logic for wild Pokemon encounters, but is yet to be finishe
 Update 8/4: Made the encounter battling more robust, allowing for switching, logic to defeat Pokemon etc.
 
 Update 8/5: Added EXP groups and the "heal" command to heal your party of Pokemon to max HP.
+Added logic to gain exp out of Pokemon Battling.
