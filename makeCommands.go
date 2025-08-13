@@ -159,5 +159,13 @@ func makeCommands(cfg *config, cache *pokecache.Cache) map[string]cliCommand {
 		},
 	}
 
+	coms["set"] = cliCommand {
+		name: "set",
+		description: "Sets the ability of a Pokemon in your Pokedex to one of your choice. (Form: set 'pokemon' 'ability')",
+		callback: func(cfg *config, args []string) error {
+			return commandSetAbility(cfg, args)
+		},
+	}
+
 	return coms
 }

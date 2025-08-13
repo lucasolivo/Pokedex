@@ -24,19 +24,19 @@ func battle(mon1 Pokemon, move1 string, mon2 Pokemon, move2 string) (Pokemon, Po
 	}
 	// use helper function to calculate damage
 	if leftFirst{
-		mon2 = damage(mon1, move1, mon2)
+		mon2 = damage(mon1, move1, mon2, 1)
 		if mon2.CurHp == 0 {
 			return mon1, mon2
 		} else {
-			mon1 = damage(mon2, move2, mon1)
+			mon1 = damage(mon2, move2, mon1, 2)
 			return mon1, mon2
 		}
 	} else {
-		mon1 = damage(mon2, move2, mon1) 
+		mon1 = damage(mon2, move2, mon1, 1) 
 		if mon1.CurHp == 0 {
 			return mon1, mon2
 		} else {
-			mon2 = damage(mon1, move1, mon2)
+			mon2 = damage(mon1, move1, mon2, 2)
 			return mon1, mon2
 		}
 	}
@@ -64,7 +64,7 @@ func switchMons(cfg *config, switchOut Pokemon, switchIn Pokemon) error{
 	return nil
 }
 
-func damage(attacker Pokemon, move string, defender Pokemon) Pokemon {
+func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon {
 	fmt.Printf("%v used %v!\n", attacker.Name, move)
 	power := attacker.Movedata[move].Power
 	accuracy := attacker.Movedata[move].Accuracy
@@ -77,6 +77,7 @@ func damage(attacker Pokemon, move string, defender Pokemon) Pokemon {
 			STABDam = 1.5
 		}
 	}
+	STABDam = STABDam * DamageEffectAttack(attacker, defender, move, order)
 	if power == "N/A" {
 		fmt.Println("To be implemented")
 		return defender

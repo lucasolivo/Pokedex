@@ -36,3 +36,5 @@ Update 8/4: Made the encounter battling more robust, allowing for switching, log
 
 Update 8/5: Added EXP groups and the "heal" command to heal your party of Pokemon to max HP.
 Added logic to gain exp out of Pokemon Battling.
+
+Update 8/12: Implemented some abilities that trigger upon attack from a Pokemon. Added the set command to set the ability of a Pokemon to a chosen one.
