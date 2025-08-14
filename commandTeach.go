@@ -80,5 +80,8 @@ func commandTeach(cfg *config, args []string) error {
 	}
 
 	cfg.Pokedex[name] = mon
+	if _, inParty := cfg.Party[name]; inParty {
+		cfg.Party[name] = mon
+	}
 	return nil
 }

@@ -1,7 +1,7 @@
 package main
 
 var expChart = map[string]map[int]int{
-	"medium slow": {
+	"medium-slow": {
 		2: 9,
 		3: 57,
 		4: 96,

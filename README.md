@@ -38,3 +38,5 @@ Update 8/5: Added EXP groups and the "heal" command to heal your party of Pokemo
 Added logic to gain exp out of Pokemon Battling.
 
 Update 8/12: Implemented some abilities that trigger upon attack from a Pokemon. Added the set command to set the ability of a Pokemon to a chosen one.
+
+Update 8/14: Implemented evolutions through level up.

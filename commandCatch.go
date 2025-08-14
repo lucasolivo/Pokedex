@@ -135,6 +135,51 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		return fmt.Errorf("Could not parse growth rate name")
 	}
 
+	// evolutionLevels stores species name -> evolution level
+	evolutionLevels := make(map[string]int)
+
+	// Get the evolution chain URL from speciesData
+	evolutionLine, ok := speciesData["evolution_chain"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("Could not parse evolution data")
+	}
+
+	evoURL, ok := evolutionLine["url"].(string)
+	if !ok {
+		return fmt.Errorf("Evolution chain URL missing")
+	}
+
+	// Fetch the evolution chain data
+	res, err = http.Get(evoURL)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("Evolution info for %s not found", pokemonName)
+	}
+
+	body, err = io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	// Parse JSON
+	var evoData map[string]interface{}
+	if err := json.Unmarshal(body, &evoData); err != nil {
+		return err
+	}
+
+	// Start from the root chain
+	chain, ok := evoData["chain"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("Invalid evolution chain format")
+	}
+
+	TraverseChain(chain, evolutionLevels, 50)
+	//fmt.Println("Evolution levels:", evolutionLevels)
+
 	// Find the moves the Pokemon should know at their current level. 
 	lvl := 1 + rand.Intn(10)
 	moves, ok := pokemonData["moves"].([]interface{})
@@ -275,6 +320,7 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		Learnset:       learnSet,
 		ExpGroup:       growthRateName,
 		TotalExp:       expChart[growthRateName][lvl],
+		EvolutionLevels: evolutionLevels,
     }
 
 	for _, move := range thisMoveset {

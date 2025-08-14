@@ -64,6 +64,7 @@ type Pokemon struct {
 	Learnset      map[string]Pokemove
 	TotalExp      int
 	ExpGroup      string
+	EvolutionLevels map[string]int
 }
 
 type Pokemove struct {
@@ -84,6 +85,79 @@ func cleanInput(text string) []string{
 	words := strings.Fields(lowerCase)
 	return words
 }
+
+// TraverseChain walks the PokéAPI evolution chain and fills evolutionLevels.
+// evolutionLevels maps species name -> evolution level.
+// defaultLevel is used for non-level-based evolutions (stones, trade, etc.).
+func TraverseChain(chain map[string]interface{}, evolutionLevels map[string]int, defaultLevel int) {
+    evolvesTo, ok := chain["evolves_to"].([]interface{})
+    if !ok || len(evolvesTo) == 0 {
+        return
+    }
+
+    // Handle split evolution
+    if len(evolvesTo) > 1 {
+        splitNames := []string{}
+        splitLevels := []int{}
+
+        for _, evo := range evolvesTo {
+            evoMap, _ := evo.(map[string]interface{})
+            species, _ := evoMap["species"].(map[string]interface{})
+            name, _ := species["name"].(string)
+
+            level := defaultLevel
+            if detailsArr, _ := evoMap["evolution_details"].([]interface{}); len(detailsArr) > 0 {
+                if details, ok := detailsArr[0].(map[string]interface{}); ok {
+                    if l, ok := details["min_level"].(float64); ok {
+                        level = int(l)
+                    }
+                }
+            }
+
+            splitNames = append(splitNames, name)
+            splitLevels = append(splitLevels, level)
+        }
+
+        // Find lowest level in split if any are level-based
+        minLevel := defaultLevel
+        for _, lvl := range splitLevels {
+            if lvl != defaultLevel && lvl < minLevel {
+                minLevel = lvl
+            }
+        }
+
+        // Assign chosen level to all in split
+        for _, name := range splitNames {
+            evolutionLevels[name] = minLevel
+        }
+
+        // Continue recursion for each branch
+        for _, evo := range evolvesTo {
+            if evoMap, ok := evo.(map[string]interface{}); ok {
+                TraverseChain(evoMap, evolutionLevels, defaultLevel)
+            }
+        }
+        return
+    }
+
+    // Single evolution case
+    evoMap, _ := evolvesTo[0].(map[string]interface{})
+    species, _ := evoMap["species"].(map[string]interface{})
+    name, _ := species["name"].(string)
+
+    level := defaultLevel
+    if detailsArr, _ := evoMap["evolution_details"].([]interface{}); len(detailsArr) > 0 {
+        if details, ok := detailsArr[0].(map[string]interface{}); ok {
+            if l, ok := details["min_level"].(float64); ok {
+                level = int(l)
+            }
+        }
+    }
+
+    evolutionLevels[name] = level
+    TraverseChain(evoMap, evolutionLevels, defaultLevel)
+}
+
 
 func startRepl() {
 	fmt.Println("Welcome to the Pokedex! Input 'help' for a list of commands!")

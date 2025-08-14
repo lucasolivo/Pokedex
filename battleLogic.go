@@ -151,7 +151,7 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 	}
 }
 
-func expGain(winner Pokemon, loser Pokemon, isTrainer bool, cfg *config) Pokemon{
+func expGain(winner Pokemon, loser Pokemon, isTrainer bool, cfg *config){
 	a := 1.0
 	if isTrainer{
 		a = 1.5
@@ -164,11 +164,25 @@ func expGain(winner Pokemon, loser Pokemon, isTrainer bool, cfg *config) Pokemon
 	winner.TotalExp = winner.TotalExp + gainInt
 	fmt.Printf("You gained %v experience!\n", gainInt)
 	for {
-		nextLevel := expChart[winner.ExpGroup][winner.Level+1]
-		if winner.TotalExp < nextLevel{
+		// Check the EXP required for the next level
+		if winner.Level >= 100 {
+			// Already max level
 			break
-		} 
-		winner = level(cfg, winner, winner.Name)
+		}
+		nextLevel := expChart[winner.ExpGroup][winner.Level+1]
+		if winner.TotalExp < nextLevel {
+			// Not enough EXP to level up further
+			cfg.Pokedex[winner.Name] = winner 
+			cfg.Party[winner.Name] = winner
+			break
+		}
+
+		// Level up the Pokémon
+		name, updatedWinner := level(cfg, winner, winner.Name)
+		winner = updatedWinner
+
+		// Update Pokedex & Party
+		cfg.Pokedex[name] = winner
+		cfg.Party[name] = winner
 	}
-	return winner
 }
