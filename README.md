@@ -40,3 +40,5 @@ Added logic to gain exp out of Pokemon Battling.
 Update 8/12: Implemented some abilities that trigger upon attack from a Pokemon. Added the set command to set the ability of a Pokemon to a chosen one.
 
 Update 8/14: Implemented evolutions through level up.
+
+Update 8/15: Added more abilities that are functional, most of the immunity abilities in particular.

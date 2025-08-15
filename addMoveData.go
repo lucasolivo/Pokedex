@@ -12,6 +12,7 @@ type Movestruct struct {
     Accuracy    *int   `json:"accuracy"`    // use *int because null is possible
     Type        NamedResource `json:"type"` // e.g. { "name": "normal", "url": "..." }
     DamageClass NamedResource `json:"damage_class"`
+    Priority    int           `json:"priority"`
 }
 
 type NamedResource struct {
@@ -57,6 +58,8 @@ func addMoveData(mon Pokemon, move string) (Pokemon, error) {
         powerStr = "N/A"
     }
 
+
+
     if moveRaw.Accuracy != nil {
         accuracyStr = fmt.Sprintf("%d", *moveRaw.Accuracy)
     } else {
@@ -68,6 +71,7 @@ func addMoveData(mon Pokemon, move string) (Pokemon, error) {
         Accuracy:    accuracyStr,
         Poketype:    moveRaw.Type.Name,
         Damagetype:  moveRaw.DamageClass.Name,
+        Priority:    moveRaw.Priority,
     }
 
     mon.Movedata[move] = newMove

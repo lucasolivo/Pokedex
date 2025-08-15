@@ -100,6 +100,22 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 			floatAccuracy = float64(acc)/100
 		}
 		hitChance := rand.Float64()
+		immunity := checkImmunityAbility(move, defender, attacker)
+		if immunity != 1.0 {
+			if immunity == 0.0{
+				fmt.Printf("It doesn't affect %v...\n", defender.Name)
+				return defender
+			} else {
+				fmt.Printf("%v absorbed the move!\n", defender.Name)
+				hpGain := int(immunity * float64(defender.CurStats["hp"]))
+				defender.CurHp += hpGain
+				if defender.CurHp > defender.CurStats["hp"]{
+					defender.CurHp = defender.CurStats["hp"]
+				}
+				fmt.Printf("%v Now is at %v/%v HP!\n", defender.Name, defender.CurHp, defender.CurStats["hp"])
+				return defender
+			}
+		}
 		if hitChance > floatAccuracy {
 			fmt.Printf("%v avoided the attack!\n", defender.Name)
 			return defender
@@ -140,7 +156,7 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 		
 		defender.CurHp -= finalDamage
 
-		fmt.Printf("%v took %v damage!, it now has %v health remaining.\n", defender.Name, finalDamage, max(0, defender.CurHp))
+		fmt.Printf("%v took %v damage!, it now has %v/%v health remaining.\n", defender.Name, finalDamage, max(0, defender.CurHp), defender.CurStats["hp"])
 
 		if defender.CurHp < 0 {
 			defender.CurHp = 0

@@ -77,6 +77,7 @@ type Move struct {
 	Accuracy string
 	Poketype string
 	Damagetype string
+	Priority int
 }
 
 // get the lowercase words of each string input

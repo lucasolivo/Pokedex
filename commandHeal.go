@@ -14,5 +14,6 @@ func commandHeal(cfg *config) error {
 		p.CurHp = p.CurStats["hp"]
 		cfg.Party[key] = p                           
 	}
+	fmt.Println("Your Pokemon are healed and ready for battle! Be sure to protect them!")
 	return nil
 }
