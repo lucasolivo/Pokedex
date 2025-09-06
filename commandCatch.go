@@ -321,6 +321,7 @@ func commandCatch(cfg *config, c *pokecache.Cache, args []string) error {
 		ExpGroup:       growthRateName,
 		TotalExp:       expChart[growthRateName][lvl],
 		EvolutionLevels: evolutionLevels,
+		StatEffects:    statChanges,
     }
 
 	for _, move := range thisMoveset {

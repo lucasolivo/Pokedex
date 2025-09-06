@@ -17,6 +17,7 @@ func commandBox(cfg *config, args []string) error {
 	changed := false
 	for i, name := range cfg.PokeKeys {
 		if name == args[0] {
+			cfg.Pokedex[name] = cfg.Party[name]
 			changed = true
 			cfg.PokeKeys = append(cfg.PokeKeys[:i], cfg.PokeKeys[i+1:]...)
 			delete(cfg.Party, name)

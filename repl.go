@@ -65,6 +65,17 @@ type Pokemon struct {
 	TotalExp      int
 	ExpGroup      string
 	EvolutionLevels map[string]int
+	StatEffects   map[string]int
+}
+
+var statChanges = map[string]int{
+	"attack": 0,
+	"defense": 0,
+	"speed": 0,
+	"special-attack": 0,
+	"special-defense": 0,
+	"accuracy": 0,
+	"evasion": 0,
 }
 
 type Pokemove struct {

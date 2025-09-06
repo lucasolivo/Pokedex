@@ -379,6 +379,7 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 		ExpGroup:       growthRateName,
 		TotalExp:       expChart[growthRateName][lvl],
 		EvolutionLevels: evolutionLevels,
+		StatEffects:    resetStatEffects(),
     }
 	for _, move := range thisMoveset {
 		newPokemon, err = addMoveData(newPokemon, move)
@@ -441,6 +442,12 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 			}
 			if command == "run" || command == "2"{
 				fmt.Printf("You escaped.\n")
+				for key, partyMon := range cfg.Party {
+					m := partyMon
+					m.StatEffects = resetStatEffects()
+					cfg.Party[key] = m
+					cfg.Pokedex[key] = m
+				}
 				break
 			}
 			// Begin battle logic against wild Pokemon
@@ -477,12 +484,18 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 								cfg.Party[cfg.PokeKeys[leadMonNum]], newPokemon = battle(cfg.Party[cfg.PokeKeys[leadMonNum]], move, newPokemon, newPokemonMove)
 								if newPokemon.CurHp == 0 {
 									fmt.Println("You won!")
+									newPokemon.StatEffects = resetStatEffects()
 									expGain(leadMon, newPokemon, false, cfg)
 									battleOver = true
 									break
 								}
 								availableToSwitch := []string{}
 								if cfg.Party[cfg.PokeKeys[leadMonNum]].CurHp == 0 {
+									key := cfg.PokeKeys[leadMonNum]
+									p := cfg.Party[key]          // copy out the struct
+									p.StatEffects = resetStatEffects()  // modify
+									cfg.Party[key] = p           // put it back
+									cfg.Pokedex[key] = p
 									canFight := false
 									count := 1
 									for _, partyMon := range cfg.PokeKeys {
@@ -550,6 +563,12 @@ func commandEncounter(cfg *config, c *pokecache.Cache, args []string) error {
 				}
 			}
 		}
+	}
+	for key, partyMon := range cfg.Party {
+		m := partyMon
+		m.StatEffects = resetStatEffects()
+		cfg.Party[key] = m
+		cfg.Pokedex[key] = m
 	}
 	return nil
 

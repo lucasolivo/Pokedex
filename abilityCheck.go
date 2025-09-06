@@ -226,67 +226,75 @@ func DamageEffectAttack(attacker Pokemon, defender Pokemon, move string, order i
 	return multiplier
 }
 
-func checkImmunityAbility(move string, defender Pokemon, attacker Pokemon) float64 {
+func checkImmunityAbility(move string, defender Pokemon, attacker Pokemon) (float64, Pokemon, Pokemon) {
 	switch {
 	case attacker.Ability == "neutralizing-gas":
-		return 1.0
+		return 1.0, defender, attacker
 	case defender.Ability == "neutralizing-gas":
-		return 1.0
+		return 1.0, defender, attacker
 	case attacker.Ability == "mold-breaker" || attacker.Ability == "teravolt":
-		return 1.0
+		return 1.0, defender, attacker
 	case defender.Ability == "armor-tail" || defender.Ability == "dazzling" || defender.Ability == "queenly-majesty":
 		if attacker.Movedata[move].Priority > 0 {
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "bulletproof":
 		if ballAndBomb[move]{
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "damp":
 		if move == "selfdestruct" || move == "explosion"{
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "earth-eater":
 		if attacker.Movedata[move].Poketype == "ground"{
-			return 0.25
+			return 0.25, defender, attacker
 		}
 	case defender.Ability == "flash-fire":
 		if attacker.Movedata[move].Poketype == "fire"{
 			//Add logic to boost fire type moves in the future
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	//Consider adding disguise and Ice Face here later
 	case defender.Ability == "levitate":
 		if attacker.Movedata[move].Poketype == "ground"{
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "motor-drive":
 		if attacker.Movedata[move].Poketype == "electric"{
 			//add speed raise to defender
-			return 0.0
+			defender.StatEffects["speed"] += 1
+			fmt.Printf("%v's speed rose!\n", defender.Name)
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "sap-sipper":
 		if attacker.Movedata[move].Poketype == "grass"{
 			//Add attack to defender
-			return 0.0
+			defender.StatEffects["attack"] += 1
+			fmt.Printf("%v's attack rose!\n", defender.Name)
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "storm-drain":
 		if attacker.Movedata[move].Poketype == "water"{
 			//Add sp. attack to defender
-			return 0.0
+			defender.StatEffects["special-attack"] += 1
+			fmt.Printf("%v's special attack rose!\n", defender.Name)
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "volt-absorb":
 		if attacker.Movedata[move].Poketype == "electric"{
-			return 0.25
+			return 0.25, defender, attacker
 		}
 	case defender.Ability == "water-absorb":
 		if attacker.Movedata[move].Poketype == "water"{
-			return 0.25
+			return 0.25, defender, attacker
 		}
 	case defender.Ability == "well-baked-body":
 		if attacker.Movedata[move].Poketype == "fire"{
 			//Raise defender's defense by 2 stages
-			return 0.0
+			defender.StatEffects["defense"] += 2
+			fmt.Printf("%v's defense sharply rose!\n", defender.Name)
+			return 0.0, defender, attacker
 		}
 	case defender.Ability == "wonder-guard":
 		mult := 1.0
@@ -294,14 +302,14 @@ func checkImmunityAbility(move string, defender Pokemon, attacker Pokemon) float
 			mult = mult * TypeChart[attacker.Movedata[move].Poketype][Montype]
 		}
 		if mult > 1.0 {
-			return 1.0
+			return 1.0, defender, attacker
 		} else {
-			return 0.0
+			return 0.0, defender, attacker
 		}
 	default:
-		return 1.0
+		return 1.0, defender, attacker
 	}
-	return 1.0
+	return 1.0, defender, attacker
 }
 
 var ballAndBomb = map[string]bool{

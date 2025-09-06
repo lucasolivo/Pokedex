@@ -24,19 +24,19 @@ func battle(mon1 Pokemon, move1 string, mon2 Pokemon, move2 string) (Pokemon, Po
 	}
 	// use helper function to calculate damage
 	if leftFirst{
-		mon2 = damage(mon1, move1, mon2, 1)
+		mon2, mon1 = damage(mon1, move1, mon2, 1)
 		if mon2.CurHp == 0 {
 			return mon1, mon2
 		} else {
-			mon1 = damage(mon2, move2, mon1, 2)
+			mon1, mon2 = damage(mon2, move2, mon1, 2)
 			return mon1, mon2
 		}
 	} else {
-		mon1 = damage(mon2, move2, mon1, 1) 
+		mon1, mon2 = damage(mon2, move2, mon1, 1) 
 		if mon1.CurHp == 0 {
 			return mon1, mon2
 		} else {
-			mon2 = damage(mon1, move1, mon2, 2)
+			mon2, mon1 = damage(mon1, move1, mon2, 2)
 			return mon1, mon2
 		}
 	}
@@ -64,7 +64,7 @@ func switchMons(cfg *config, switchOut Pokemon, switchIn Pokemon) error{
 	return nil
 }
 
-func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon {
+func damage(attacker Pokemon, move string, defender Pokemon, order int) (Pokemon, Pokemon) {
 	fmt.Printf("%v used %v!\n", attacker.Name, move)
 	power := attacker.Movedata[move].Power
 	accuracy := attacker.Movedata[move].Accuracy
@@ -78,14 +78,53 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 		}
 	}
 	STABDam = STABDam * DamageEffectAttack(attacker, defender, move, order)
+	var floatAccuracy float64
+	if accuracy == "N/A" {
+		floatAccuracy = 10000.0
+	} else {
+		acc, err := strconv.Atoi(accuracy)
+		if err != nil {
+			fmt.Println("Problem with accuracy conversion")
+			return defender, attacker
+		}
+		floatAccuracy = float64(acc)/100
+	}
+	accChange := attacker.StatEffects["accuracy"]
+	a := findAcc(accChange) / findAcc(attacker.StatEffects["evasion"])
+	floatAccuracy = floatAccuracy * a
+	hitChance := rand.Float64()
+	immunity, defender, attacker := checkImmunityAbility(move, defender, attacker)
+	if immunity != 1.0 {
+		if immunity == 0.0{
+			fmt.Printf("It doesn't affect %v...\n", defender.Name)
+			return defender, attacker
+		} else {
+			fmt.Printf("%v absorbed the move!\n", defender.Name)
+			hpGain := int(immunity * float64(defender.CurStats["hp"]))
+			defender.CurHp += hpGain
+			if defender.CurHp > defender.CurStats["hp"]{
+				defender.CurHp = defender.CurStats["hp"]
+			}
+			fmt.Printf("%v Now is at %v/%v HP!\n", defender.Name, defender.CurHp, defender.CurStats["hp"])
+			return defender, attacker
+		}
+	}
+	if hitChance > floatAccuracy {
+		fmt.Printf("%v avoided the attack!\n", defender.Name)
+		return defender, attacker
+	}
 	if power == "N/A" {
-		fmt.Println("To be implemented")
-		return defender
+		var hit bool
+		attacker, defender, hit = checkStatEffectMove(move, attacker, defender)
+		if !hit{
+			fmt.Println("To be implemented")
+		}
+		return defender, attacker
 	} else {
 		intPower, err := strconv.Atoi(power)
 		if err != nil {
 			fmt.Println("Problem with power conversion")
-			return defender
+			return defender, attacker
 		}
 		// if accuracy is N/A then it'll always hit, accounting for -6 I made this like crazy high
 		var floatAccuracy float64
@@ -95,16 +134,19 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 			acc, err := strconv.Atoi(accuracy)
 			if err != nil {
 				fmt.Println("Problem with accuracy conversion")
-				return defender
+				return defender, attacker
 			}
 			floatAccuracy = float64(acc)/100
 		}
+		accChange := attacker.StatEffects["accuracy"]
+		a := findAcc(accChange) / findAcc(attacker.StatEffects["evasion"])
+		floatAccuracy = floatAccuracy * a
 		hitChance := rand.Float64()
-		immunity := checkImmunityAbility(move, defender, attacker)
+		immunity, defender, attacker := checkImmunityAbility(move, defender, attacker)
 		if immunity != 1.0 {
 			if immunity == 0.0{
 				fmt.Printf("It doesn't affect %v...\n", defender.Name)
-				return defender
+				return defender, attacker
 			} else {
 				fmt.Printf("%v absorbed the move!\n", defender.Name)
 				hpGain := int(immunity * float64(defender.CurStats["hp"]))
@@ -113,12 +155,12 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 					defender.CurHp = defender.CurStats["hp"]
 				}
 				fmt.Printf("%v Now is at %v/%v HP!\n", defender.Name, defender.CurHp, defender.CurStats["hp"])
-				return defender
+				return defender, attacker
 			}
 		}
 		if hitChance > floatAccuracy {
 			fmt.Printf("%v avoided the attack!\n", defender.Name)
-			return defender
+			return defender, attacker
 		}
 		multiplier := 1.0
 		for _, Montype := range defender.Types {
@@ -132,15 +174,15 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 			fmt.Println("It's super effective!")
 		}
 		// determine if attack is physical or special
-		var damStat int
-		var defStat int
+		var damStat float64
+		var defStat float64
 		if damageType == "physical" {
-			damStat = attacker.CurStats["attack"]
-			defStat = defender.CurStats["defense"]
+			damStat = float64(attacker.CurStats["attack"]) * findStat(attacker.StatEffects["attack"])
+			defStat = float64(defender.CurStats["defense"]) * findStat(attacker.StatEffects["defense"])
 		} else {
-			damStat = attacker.CurStats["special-attack"]
-			defStat = defender.CurStats["special-defense"]
-		}
+			damStat = float64(attacker.CurStats["special-attack"]) * findStat(attacker.StatEffects["special-attack"])
+			defStat = float64(defender.CurStats["special-defense"]) * findStat(attacker.StatEffects["special-defense"])
+		} 
 		damageRoll := float64(rand.Intn(16)+85) / 100.0
 		critChance := 1.0/24.0
 		critDam := 1.0
@@ -149,7 +191,7 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 			critDam = 1.5
 		}
 		base := float64((2*attacker.Level)/5 + 2)
-		scaling := float64(intPower) * float64(damStat) / float64(defStat)
+		scaling := float64(intPower) * damStat / defStat
 		baseDamage := ((base * scaling) / 50.0 + 2) * critDam * STABDam * multiplier * damageRoll
 		finalDamage := int(math.Ceil(baseDamage))
 
@@ -163,7 +205,7 @@ func damage(attacker Pokemon, move string, defender Pokemon, order int) Pokemon 
 			fmt.Printf("%v Fainted!\n", defender.Name)
 		}
 
-		return defender
+		return defender, attacker
 	}
 }
 
@@ -201,4 +243,74 @@ func expGain(winner Pokemon, loser Pokemon, isTrainer bool, cfg *config){
 		cfg.Pokedex[name] = winner
 		cfg.Party[name] = winner
 	}
+}
+
+func findAcc(a int) float64 {
+	ret := 1.0
+	switch{
+	case a == -6:
+		return (3.0/9.0)
+	case a == -5:
+		return (3.0/8.0)
+	case a == -4:
+		return (3.0/7.0)
+	case a == -3:
+		return (3.0/6.0)
+	case a == -2:
+		return (3.0/5.0)
+	case a == -1:
+		return (3.0/4.0)
+	case a == 0:
+		return 1.0
+	case a == 1:
+		return (4.0/3.0)
+	case a == 2:
+		return (5.0/3.0)
+	case a == 3:
+		return (6.0/3.0)
+	case a == 4:
+		return (7.0/3.0)
+	case a == 5:
+		return (8.0/3.0)
+	case a == 6:
+		return (9.0/3.0)
+	default:
+		return ret
+	}
+	return ret
+}
+
+func findStat(a int) float64 {
+	ret := 1.0
+	switch{
+	case a == -6:
+		return (2.0/8.0)
+	case a == -5:
+		return (2.0/7.0)
+	case a == -4:
+		return (2.0/6.0)
+	case a == -3:
+		return (2.0/5.0)
+	case a == -2:
+		return (2.0/4.0)
+	case a == -1:
+		return (2.0/3.0)
+	case a == 0:
+		return 1.0
+	case a == 1:
+		return (3.0/2.0)
+	case a == 2:
+		return (4.0/2.0)
+	case a == 3:
+		return (5.0/2.0)
+	case a == 4:
+		return (6.0/2.0)
+	case a == 5:
+		return (7.0/2.0)
+	case a == 6:
+		return (8.0/2.0)
+	default:
+		return ret
+	}
+	return ret
 }
