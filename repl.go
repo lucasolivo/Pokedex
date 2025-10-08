@@ -61,7 +61,7 @@ type Pokemon struct {
 	Moves         []string  // Current learned moves of the pokemon. 4 Maximum slots.
 	Movedata      map[string]Move // The actual data about a particular move. Currently only dealing with power
 	Ability       string
-	Learnset      map[string]Pokemove
+	Learnset      map[string]Pokemove // All possible moves a pokemon can learn
 	TotalExp      int
 	ExpGroup      string
 	EvolutionLevels map[string]int

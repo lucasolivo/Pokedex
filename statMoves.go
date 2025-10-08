@@ -99,7 +99,7 @@ func checkStatEffectMove(move string, attacker Pokemon, defender Pokemon) (Pokem
 		defender.StatEffects["defense"] = max(-6, defender.StatEffects["attack"] - 2)
 		break
 
-	// harshly lower defense, harshly raise attack
+	// harshly lower defense, sharply raise attack
 	case move == "spicy-extract":
 		hit = true
 		if defender.StatEffects["defense"] == -6{
@@ -112,7 +112,7 @@ func checkStatEffectMove(move string, attacker Pokemon, defender Pokemon) (Pokem
 			fmt.Printf("%v's attack can't go higher!\n", defender.Name)
 			break
 		}
-		fmt.Printf("%v's attack harshly rose!\n", defender.Name)
+		fmt.Printf("%v's attack sharply rose!\n", defender.Name)
 		defender.StatEffects["attack"] = min(6, defender.StatEffects["attack"] + 2)
 		break
 
@@ -199,62 +199,64 @@ func checkStatEffectMove(move string, attacker Pokemon, defender Pokemon) (Pokem
 		defender.StatEffects["speed"] -= 1
 		break
 
+	//affects user's stats
+
 	// Shell smash
 	case move == "shell-smash":
 		hit = true
-		if defender.StatEffects["special-defense"] == -6{
-			fmt.Printf("%v's special defense can't go lower!\n", defender.Name)
+		if attacker.StatEffects["special-defense"] == -6{
+			fmt.Printf("%v's special defense can't go lower!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's special-defense harshly fell!\n", defender.Name)
-			defender.StatEffects["special-defense"] = max(-6, defender.StatEffects["special-defense"] - 2)
+			fmt.Printf("%v's special-defense harshly fell!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = max(-6, attacker.StatEffects["special-defense"] - 2)
 		}
-		if defender.StatEffects["defense"] == -6{
-			fmt.Printf("%v's defense can't go lower!\n", defender.Name)
+		if attacker.StatEffects["defense"] == -6{
+			fmt.Printf("%v's defense can't go lower!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's defense harshly fell!\n", defender.Name)
-			defender.StatEffects["defense"] = max(-6, defender.StatEffects["defense"] - 2)
+			fmt.Printf("%v's defense harshly fell!\n", attacker.Name)
+			attacker.StatEffects["defense"] = max(-6, attacker.StatEffects["defense"] - 2)
 		}
-		if defender.StatEffects["special-attack"] == 6{
-			fmt.Printf("%v's special attack can't go higher!\n", defender.Name)
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's special attack harshly rose!\n", defender.Name)
-			defender.StatEffects["special-attack"] = min(6, defender.StatEffects["special-attack"] + 2)
+			fmt.Printf("%v's special attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 2)
 		}
-		if defender.StatEffects["attack"] == 6{
-			fmt.Printf("%v's attack can't go higher!\n", defender.Name)
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's attack harshly rose!\n", defender.Name)
-			defender.StatEffects["attack"] = min(6, defender.StatEffects["attack"] + 2)
+			fmt.Printf("%v's attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 2)
 		}
-		if defender.StatEffects["speed"] == 6{
-			fmt.Printf("%v's speed can't go higher!\n", defender.Name)
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's speed harshly rose!\n", defender.Name)
-			defender.StatEffects["speed"] = min(6, defender.StatEffects["speed"] + 2)
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
 		}
 		break
 
 	//Curse
 	case move == "curse":
 		hit = true
-		if defender.StatEffects["speed"] == -6{
-			fmt.Printf("%v's speed can't go lower!\n", defender.Name)
+		if attacker.StatEffects["speed"] == -6{
+			fmt.Printf("%v's speed can't go lower!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's speed fell!\n", defender.Name)
-			defender.StatEffects["speed"] -= 1
+			fmt.Printf("%v's speed fell!\n", attacker.Name)
+			attacker.StatEffects["speed"] -= 1
 		}
-		if defender.StatEffects["attack"] == 6{
-			fmt.Printf("%v's attack can't go higher!\n", defender.Name)
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's attack rose!\n", defender.Name)
-			defender.StatEffects["attack"] += 1
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] += 1
 		}
-		if defender.StatEffects["defense"] == 6{
-			fmt.Printf("%v's defense can't go higher!\n", defender.Name)
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
 			break
 		} else {
-			fmt.Printf("%v's defense rose!\n", defender.Name)
-			defender.StatEffects["defense"] += 1
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] += 1
 			break
 		}
 
@@ -267,23 +269,23 @@ func checkStatEffectMove(move string, attacker Pokemon, defender Pokemon) (Pokem
 		}
 		dex := rand.Intn(len(toChange)) - 1
 		changing := toChange[dex]
-		fmt.Printf("%v's %v harshly rose!\n", attacker.Name, changing)
+		fmt.Printf("%v's %v sharply rose!\n", attacker.Name, changing)
 		attacker.StatEffects[changing] = min(6, attacker.StatEffects[changing] + 2)
 		break
 	
 	case move == "decorate":
 		hit = true
-		if defender.StatEffects["special-attack"] == 6{
-			fmt.Printf("%v's special attack can't go higher!\n", defender.Name)
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's special attack harshly rose!\n", defender.Name)
-			defender.StatEffects["special-attack"] = min(6, defender.StatEffects["special-attack"] + 2)
+			fmt.Printf("%v's special attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 2)
 		}
-		if defender.StatEffects["attack"] == 6{
-			fmt.Printf("%v's attack can't go higher!\n", defender.Name)
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
 		} else {
-			fmt.Printf("%v's attack harshly rose!\n", defender.Name)
-			defender.StatEffects["attack"] = min(6, defender.StatEffects["attack"] + 2)
+			fmt.Printf("%v's attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 2)
 		}
 		break
 
@@ -350,11 +352,607 @@ func checkStatEffectMove(move string, attacker Pokemon, defender Pokemon) (Pokem
 			fmt.Println("The move failed!")
 		}
 
+	case move == "flower-shield":
+		hit = true
+		for _, typ := range attacker.Types{
+			if typ == "grass"{
+				if attacker.StatEffects["attack"] == 6{
+					fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+					break
+				} else {
+					fmt.Printf("%v's attack rose!\n", attacker.Name)
+					attacker.StatEffects["attack"] += 1
+					break
+				}
+			}
+		}
+		for _, typ := range defender.Types{
+			if typ == "grass"{
+				if defender.StatEffects["defense"] == 6{
+				fmt.Printf("%v's defense can't go higher!\n", defender.Name)
+				break
+			} else {
+				fmt.Printf("%v's defense rose!\n", defender.Name)
+				defender.StatEffects["defense"] += 1
+				break
+			}
+			}
+		}
+
+	case move == "coil":
+		hit = true
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+
+		if attacker.StatEffects["accuracy"] == 6{
+			fmt.Printf("%v's accuracy can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's accuracy rose!\n", attacker.Name)
+			attacker.StatEffects["accuracy"] = min(6, attacker.StatEffects["accuracy"] + 1)
+		}
+		break
+	
+	case move == "hone-claws":
+		hit = true
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["accuracy"] == 6{
+			fmt.Printf("%v's accuracy can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's accuracy rose!\n", attacker.Name)
+			attacker.StatEffects["accuracy"] = min(6, attacker.StatEffects["accuracy"] + 1)
+		}
+		break
+
+	case move == "belly-drum":
+		hit = true
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			if attacker.CurHp < attacker.CurStats["hp"] / 2{
+				fmt.Printf("The move failed.")
+				break
+			}
+			attacker.CurHp -= attacker.CurStats["hp"] / 2
+			fmt.Printf("%v's attack was maxed out!\n", attacker.Name)
+			attacker.StatEffects["attack"] = 6
+			break
+		}
+
+	case move == "bulk-up":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		break
+
+	case move == "clangorous-soul":
+		hit = true
+		if attacker.CurHp < attacker.CurStats["hp"] / 3 || 
+		(attacker.StatEffects["attack"] == 6 && attacker.StatEffects["special-attack"] == 6 && 
+		attacker.StatEffects["defense"] == 6 &&
+		attacker.StatEffects["special-defense"] == 6 && attacker.StatEffects["speed"] == 6){
+			fmt.Printf("The move failed.")
+			break
+		}
+		attacker.CurHp -= attacker.CurStats["hp"] / 3
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "dragon-dance":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "fillet-away":
+		hit = true
+
+		if attacker.CurHp < attacker.CurStats["hp"] / 2 || 
+		(attacker.StatEffects["attack"] == 6 && attacker.StatEffects["special-attack"] == 6 &&
+		attacker.StatEffects["speed"] == 6){
+			fmt.Printf("The move failed.")
+			break
+		}
+
+		attacker.CurHp -= attacker.CurStats["hp"] / 2
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 2)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 2)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
+		}
+
+	case move == "growth":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		break
+
+	case move == "howl":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		break
+		
+	case move == "meditate":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		break
+
+	case move == "no-retreat":
+		hit = true
+
+		// add no switch logic
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "sharpen":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		break
+
+	case move == "shift-gear":
+		hit = true
+		
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
+		}
+
+		break
+		
+	case move == "swords-dance":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 2)
+		}
+
+		break
+
+	case move == "tidy-up":
+		hit = true
+
+		//logic to remove hazards
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "victory-dance":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "work-up":
+		hit = true
+
+		if attacker.StatEffects["attack"] == 6{
+			fmt.Printf("%v's attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's attack rose!\n", attacker.Name)
+			attacker.StatEffects["attack"] = min(6, attacker.StatEffects["attack"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		break
+
+		
+	case move == "acid-armor" || move == "barrier" || move == "iron-defense" || move == "shelter":
+		hit = true
+
+		if defender.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+			break
+		} else {
+			fmt.Printf("%v's defense sharply rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 2)
+			break
+		}
+		
+	case move == "cosmic-power" || move == "defend-order":
+		hit = true
+
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+
+		break
+
+	case move == "cotton-guard":
+		hit = true
+
+		if defender.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+			break
+		} else {
+			fmt.Printf("%v's defense drastically rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 3)
+			break
+		}
+
+	case move == "defense-curl" || move == "harden" || move == "withdraw":
+		hit = true
+
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+
+		break
+
+	case move == "stockpile": // add stockpile/swallow/spit-up logic?
+		hit = true
+
+		if attacker.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's defense rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 1)
+		}
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+
+		break
+
+	case move == "stuff-cheeks": //implement berry eating logic
+		hit = true
+
+		if defender.StatEffects["defense"] == 6{
+			fmt.Printf("%v's defense can't go higher!\n", attacker.Name)
+			break
+		} else {
+			fmt.Printf("%v's defense sharply rose!\n", attacker.Name)
+			attacker.StatEffects["defense"] = min(6, attacker.StatEffects["defense"] + 2)
+			break
+		}
+
+	case move == "double-team" || move == "minimize":
+		hit = true
+
+		if attacker.StatEffects["evasion"] == 6{
+			fmt.Printf("%v's evasion can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's evasion sharply rose!\n", attacker.Name)
+			attacker.StatEffects["evasion"] = min(6, attacker.StatEffects["evasion"] + 2)
+		}
+
+		break
+
+	case move == "calm-mind":
+		hit = true
+
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		break
+
+	case move == "geomancy":
+		hit = true
+
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 2)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 2)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
+		}
+		break
+
+	case move == "quiver-dance":
+		hit = true
+
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 1)
+		}
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 1)
+		}
+		break
+
+	case move == "nasty-plot":
+		hit = true
+
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 2)
+		}
+
+		break
+
+	case move == "tail-glow":
+		hit = true
+
+		if attacker.StatEffects["special-attack"] == 6{
+			fmt.Printf("%v's special attack can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special attack drastically rose!\n", attacker.Name)
+			attacker.StatEffects["special-attack"] = min(6, attacker.StatEffects["special-attack"] + 3)
+		}
+
+		break
+
+	case move == "amnesia":
+		hit = true
+
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense sharply rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 2)
+		}
+
+		break
+
+	case move == "charge": //add logic for next electric move to double
+		hit = true
+
+		if attacker.StatEffects["special-defense"] == 6{
+			fmt.Printf("%v's special defense can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's special defense rose!\n", attacker.Name)
+			attacker.StatEffects["special-defense"] = min(6, attacker.StatEffects["special-defense"] + 1)
+		}
+
+		break
+
+	case move == "agility" || move == "rock-polish":
+		hit = true
+
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
+		}
+
+		break
+
+	case move == "autotomize": //add logic to reduce pokemon weight
+		hit = true
+
+		if attacker.StatEffects["speed"] == 6{
+			fmt.Printf("%v's speed can't go higher!\n", attacker.Name)
+		} else {
+			fmt.Printf("%v's speed sharply rose!\n", attacker.Name)
+			attacker.StatEffects["speed"] = min(6, attacker.StatEffects["speed"] + 2)
+		}
+
+		break
+	
 	default:
 		break
 	}
 	return attacker, defender, hit
-
 }
 
 //func checkStatusMove()
